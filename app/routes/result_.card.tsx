@@ -8,15 +8,7 @@ export default function Page() {
   const [text, setText] = useState("");
 
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    const lines = value.split("\n");
-
-    // 2줄까지만 입력 허용
-    if (lines.length > 2) {
-      setText(lines.slice(0, 2).join("\n"));
-    } else {
-      setText(value);
-    }
+    setText(e.target.value);
   };
 
   return (
