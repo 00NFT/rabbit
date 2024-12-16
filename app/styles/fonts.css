@@ -1,13 +1,13 @@
 @font-face {
   font-family: "Unbee_sehyun";
-  src: url("/fonts/UhBee Se_hyun.ttf") format("truetype");
+  src: url("/fonts/UhBeeSehyun.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Unbee_sehyun";
-  src: url("/fonts/UhBee Se_hyun Bold.ttf") format("truetype");
+  src: url("/fonts/UhBeeSehyunBold.ttf") format("truetype");
   font-weight: bold;
   font-style: normal;
 }
