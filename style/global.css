@@ -41,3 +41,8 @@ textarea,
 select {
   font: inherit;
 }
+
+a {
+  color: black;
+  text-decoration: none;
+}
