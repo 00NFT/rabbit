@@ -1,7 +1,7 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import "../style/global.css";
-import fonts from "../style/fonts.css";
+import "../style/fonts.css";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -10,7 +10,6 @@ export const links: LinksFunction = () => [
     href: "https://fonts.gstatic.com",
     crossOrigin: "anonymous",
   },
-  { rel: "stylesheet", href: fonts },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
