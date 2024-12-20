@@ -1,28 +1,37 @@
 import { css } from "@emotion/react";
 import { useParams } from "@remix-run/react";
+import { useEffect } from "react";
 import FlipCard from "~/components/flip-card";
+import { useTimer } from "~/hooks/useTimer";
 
 const FLIP_DURATION = 100;
 const PROGRESS_DURATION = FLIP_DURATION + 3000; // Flip time + 3s
 
 export default function Game() {
   const { step } = useParams();
+  const { start, stop, progress } = useTimer(PROGRESS_DURATION);
 
   if (!step) return <div>로딩중</div>;
+
+  useEffect(() => {
+    setTimeout(() => start(), FLIP_DURATION);
+  }, []);
 
   return (
     <>
       <div css={containerCss}>
         <h1>다르게 생긴 {}를 찾아줘</h1>
-        <div css={progressBarCss(60)}>
+        <div css={progressBarCss(progress)}>
           <div />
         </div>
         <div role="button" css={imageGridCss(Number(step) + 1)}>
-          {new Array(4).fill(null).map((_, idx) => (
-            <FlipCard key={idx} duration={FLIP_DURATION}>
-              <> {idx + 1}번째 이미지</>
-            </FlipCard>
-          ))}
+          {Array(4)
+            .fill(null)
+            .map((_, idx) => (
+              <FlipCard key={idx} onClick={stop} duration={FLIP_DURATION}>
+                <> {idx + 1}번째 이미지</>
+              </FlipCard>
+            ))}
         </div>
       </div>
     </>

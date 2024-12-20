@@ -24,9 +24,9 @@ export default function FlipCard({ duration = 100, children, ...props }: Props) 
             `,
           ]}
         >
-          뒷면
+          {children}
         </div>
-        <div css={[backfaceCss, cardCss]}>{children}</div>
+        <div css={[backfaceCss, cardCss]}>뒷면</div>
       </div>
     </div>
   );
@@ -55,6 +55,7 @@ const cardCss = css`
   width: 100%;
   height: 100%;
 
+  background-color: white;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 `;
@@ -64,7 +65,5 @@ const flipCss = css`
 `;
 
 const backfaceCss = css`
-  background-color: white;
-
   transform: rotateY(180deg);
 `;
