@@ -1,8 +1,9 @@
 import { css } from "@emotion/react";
 import { useParams } from "@remix-run/react";
+import FlipCard from "~/components/flip-card";
 
-// 1단계 임시 데이터
-const dummy = new Array(4).fill(null).map((_, idx) => <div key={idx}>{idx + 1}번째 이미지</div>);
+const FLIP_DURATION = 100;
+const PROGRESS_DURATION = FLIP_DURATION + 3000; // Flip time + 3s
 
 export default function Game() {
   const { step } = useParams();
@@ -17,7 +18,11 @@ export default function Game() {
           <div />
         </div>
         <div role="button" css={imageGridCss(Number(step) + 1)}>
-          {dummy.map((d) => d)}
+          {new Array(4).fill(null).map((_, idx) => (
+            <FlipCard key={idx} duration={FLIP_DURATION}>
+              <> {idx + 1}번째 이미지</>
+            </FlipCard>
+          ))}
         </div>
       </div>
     </>
@@ -57,7 +62,6 @@ const imageGridCss = (gridCnt: number) => css`
     width: 100%;
     height: 100%;
 
-    background-color: white;
     border-radius: 12px;
   }
 `;
