@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { useParams } from "@remix-run/react";
 import { useEffect } from "react";
 import FlipCard from "~/components/flip-card";
+import ProgressBar from "~/components/progress-bar";
 import { useTimer } from "~/hooks/useTimer";
 
 const FLIP_DURATION = 100;
@@ -9,21 +10,20 @@ const PROGRESS_DURATION = FLIP_DURATION + 3000; // Flip time + 3s
 
 export default function Game() {
   const { step } = useParams();
-  const { start, stop, progress } = useTimer(PROGRESS_DURATION);
 
-  if (!step) return <div>로딩중</div>;
+  const { start, stop, progress } = useTimer(PROGRESS_DURATION);
 
   useEffect(() => {
     setTimeout(() => start(), FLIP_DURATION);
   }, []);
 
+  if (!step) return <div>로딩중</div>;
+
   return (
     <>
       <div css={containerCss}>
         <h1>다르게 생긴 {}를 찾아줘</h1>
-        <div css={progressBarCss(progress)}>
-          <div />
-        </div>
+        <ProgressBar progress={progress} />
         <div role="button" css={imageGridCss(Number(step) + 1)}>
           {Array(4)
             .fill(null)
@@ -72,26 +72,5 @@ const imageGridCss = (gridCnt: number) => css`
     height: 100%;
 
     border-radius: 12px;
-  }
-`;
-
-const progressBarCss = (progress: number) => css`
-  width: 100%;
-  height: 6px;
-
-  margin-top: 22px;
-
-  background-color: #dde6fa;
-  border-radius: 100px;
-
-  overflow: hidden;
-
-  > div {
-    width: ${progress}%;
-    height: 100%;
-
-    background-color: #151528;
-
-    transition: width 0.1s linear;
   }
 `;
