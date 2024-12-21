@@ -2,22 +2,25 @@ import { css } from "@emotion/react";
 import { AllHTMLAttributes, useEffect, useState } from "react";
 
 interface Props extends Omit<AllHTMLAttributes<HTMLDivElement>, "children"> {
-  duration?: number;
+  delay?: number; // ms
+  duration?: number; // s
   children: React.ReactNode;
 }
 
-export default function FlipCard({ duration = 100, children, ...props }: Props) {
+export default function FlipCard({ delay = 100, duration = 1, children, ...props }: Props) {
   const [flip, setFlip] = useState<boolean>(false);
 
   useEffect(() => {
-    setTimeout(() => setFlip(true), duration);
+    setTimeout(() => setFlip(true), delay);
   }, []);
 
   return (
     <div css={[cardContainerCss, flip && flipCss]} {...props}>
-      <div css={[innerCss, flip && flipCss]}>
+      <div css={[innerCss(duration), flip && flipCss]}>
+        <div css={[cardCss, backfaceCss]}>
+          <div>뒷면</div>
+        </div>
         <div css={[cardCss]}>{children}</div>
-        <div css={[cardCss, backfaceCss]}>뒷면</div>
       </div>
     </div>
   );
@@ -31,13 +34,13 @@ const cardContainerCss = css`
   background-color: transparent;
 `;
 
-const innerCss = css`
+const innerCss = (duration: number) => css`
   position: relative;
 
   width: 100%;
   height: 100%;
 
-  transition: transform 1s;
+  transition: transform ${duration}s;
 `;
 
 const cardCss = css`

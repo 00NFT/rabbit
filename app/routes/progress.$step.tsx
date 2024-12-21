@@ -5,8 +5,9 @@ import FlipCard from "~/components/flip-card";
 import ProgressBar from "~/components/progress-bar";
 import { useTimer } from "~/hooks/useTimer";
 
-const FLIP_DURATION = 100;
-const PROGRESS_DURATION = FLIP_DURATION + 3000; // Flip time + 3s
+const FLIP_DELAY = 100; // ms
+const FLIP_DURATION = 1; // s
+const PROGRESS_DURATION = FLIP_DELAY + 3000; // Flip time + 3s
 
 export default function Game() {
   const { step } = useParams();
@@ -14,7 +15,7 @@ export default function Game() {
   const { start, stop, progress } = useTimer(PROGRESS_DURATION);
 
   useEffect(() => {
-    setTimeout(() => start(), FLIP_DURATION);
+    setTimeout(() => start(), FLIP_DELAY);
   }, []);
 
   if (!step) return <div>로딩중</div>;
@@ -28,7 +29,7 @@ export default function Game() {
           {Array(4)
             .fill(null)
             .map((_, idx) => (
-              <FlipCard key={idx} onClick={stop} duration={FLIP_DURATION}>
+              <FlipCard key={idx} onClick={stop} delay={FLIP_DELAY} duration={FLIP_DURATION}>
                 <> {idx + 1}번째 이미지</>
               </FlipCard>
             ))}
