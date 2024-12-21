@@ -30,7 +30,7 @@ export default function Game() {
             .fill(null)
             .map((_, idx) => (
               <FlipCard key={idx} onClick={stop} delay={FLIP_DELAY} duration={FLIP_DURATION}>
-                <> {idx + 1}번째 이미지</>
+                <div css={cardCss}> {idx + 1}번째 이미지</div>
               </FlipCard>
             ))}
         </div>
@@ -74,4 +74,15 @@ const imageGridCss = (gridCnt: number) => css`
 
     border-radius: 12px;
   }
+`;
+
+const cardCss = css`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 12px;
 `;
