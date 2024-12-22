@@ -3,11 +3,11 @@ import { AllHTMLAttributes, useEffect, useState } from "react";
 
 interface Props extends Omit<AllHTMLAttributes<HTMLDivElement>, "children"> {
   delay?: number; // ms
-  duration?: number; // s
+  duration?: number; // ms
   children: React.ReactNode;
 }
 
-export default function FlipCard({ delay = 100, duration = 1, children, ...props }: Props) {
+export default function FlipCard({ delay = 100, duration = 1000, children, ...props }: Props) {
   const [flip, setFlip] = useState<boolean>(false);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function FlipCard({ delay = 100, duration = 1, children, ...props
 
   return (
     <div css={[cardContainerCss, flip && flipCss]} {...props}>
-      <div css={[innerCss(duration), flip && flipCss]}>
+      <div css={[innerCss(duration / 1000), flip && flipCss]}>
         <div css={[cardCss, backfaceCss]}>
           <div>뒷면</div>
         </div>

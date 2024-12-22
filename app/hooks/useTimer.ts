@@ -6,6 +6,7 @@ export const useTimer = (duration: number) => {
 
   const start = () => setIsRunning(true);
   const stop = () => setIsRunning(false);
+  const reset = () => setProgress(0);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -28,5 +29,5 @@ export const useTimer = (duration: number) => {
     return () => clearInterval(timer);
   }, [isRunning, duration]);
 
-  return { start, stop, progress };
+  return { start, stop, reset, progress };
 };
