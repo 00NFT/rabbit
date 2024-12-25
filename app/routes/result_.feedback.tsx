@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
 import { useState } from "react";
+import { FloatingBottomArea } from "~/components/floating-bottom-area";
 import { Textarea } from "~/components/text-area";
 
 type FeedbackValues = {
@@ -99,12 +100,11 @@ export default function Page() {
         </div>
       </div>
 
-      <>
+      <FloatingBottomArea>
         <div css={buttons.wrapperCss}>
           <button css={buttons.submitButtonCss}>제출하기</button>
         </div>
-        <div css={buttons.placeholderCss} />
-      </>
+      </FloatingBottomArea>
     </>
   );
 }
@@ -155,19 +155,11 @@ const feedbacks = {
 
 const buttons = {
   wrapperCss: css`
-    position: fixed;
-    bottom: 0;
-
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 12px 24px 32px;
 
     display: flex;
     gap: 10px;
     justify-content: center;
-
-    background-color: white;
 
     > button {
       width: 100%;
@@ -181,10 +173,5 @@ const buttons = {
   submitButtonCss: css`
     color: white;
     background-color: #151528;
-  `,
-
-  placeholderCss: css`
-    height: 100px;
-    width: 100%;
   `,
 };

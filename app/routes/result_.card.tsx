@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { Link, useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
 import { useState } from "react";
+import { FloatingBottomArea } from "~/components/floating-bottom-area";
 
 export default function Page() {
   const navigate = useNavigate();
@@ -38,20 +39,23 @@ export default function Page() {
         </div>
       </div>
 
-      {/* NOTE: 베타테스트 버튼 */}
-      <div css={buttons.wrapperCss}>
-        <Link to={"/result/feedback"} css={buttons.shareButtonCss}>
-          베타테스트 후기 남기기
-        </Link>
-        {/* <button css={buttons.downloadButtonCss}>카드 다운로드</button>
+      <FloatingBottomArea>
+        <div css={buttons.wrapperCss}>
+          {/* NOTE: 베타테스트 버튼 */}
+          <Link to={"/result/feedback"} css={buttons.shareButtonCss}>
+            베타테스트 후기 남기기
+          </Link>
+
+          {/* <button css={buttons.downloadButtonCss}>카드 다운로드</button>
         <button css={buttons.shareButtonCss}>결과 공유하기</button> */}
-      </div>
+        </div>
+      </FloatingBottomArea>
     </>
   );
 }
 
 const containerCss = css`
-  padding-top: 64px;
+  padding: 64px 24px 0 24px;
 
   > h1 {
     font-size: 20px;
@@ -126,13 +130,7 @@ const underlineCss = css`
 
 const buttons = {
   wrapperCss: css`
-    position: fixed;
-    bottom: 0;
-
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 12px 24px 32px;
 
     display: flex;
     gap: 10px;
