@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { useNavigate } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
 import { useState } from "react";
 
@@ -38,9 +38,13 @@ export default function Page() {
         </div>
       </div>
 
+      {/* NOTE: 베타테스트 버튼 */}
       <div css={buttons.wrapperCss}>
-        <button css={buttons.downloadButtonCss}>카드 다운로드</button>
-        <button css={buttons.shareButtonCss}>결과 공유하기</button>
+        <Link to={"/result/feedback"} css={buttons.shareButtonCss}>
+          베타테스트 후기 남기기
+        </Link>
+        {/* <button css={buttons.downloadButtonCss}>카드 다운로드</button>
+        <button css={buttons.shareButtonCss}>결과 공유하기</button> */}
       </div>
     </>
   );
@@ -134,7 +138,8 @@ const buttons = {
     gap: 10px;
     justify-content: center;
 
-    > button {
+    > button,
+    a {
       width: 100%;
       text-align: center;
       border-radius: 8px;
