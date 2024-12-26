@@ -68,7 +68,7 @@ export default function Game() {
         await handleDelayHeadingChange("정답!", 0);
       } else {
         await handleDelayHeadingChange("땡!", 0);
-        await handleDelayHeadingChange("여기에 있었어", 1000, () => {
+        await handleDelayHeadingChange("여기에 있었어", 800, () => {
           setShowAnswer(true);
         });
       }
@@ -84,7 +84,7 @@ export default function Game() {
           });
         });
       } else
-        await handleDelayHeadingChange("다음 아이템을 찾으러 가볼까?", 1000, () => {
+        await handleDelayHeadingChange("다음 아이템을 찾으러 가볼까?", 2000, () => {
           setShowNextStep(true);
         });
     }
