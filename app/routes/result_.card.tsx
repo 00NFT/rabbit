@@ -9,8 +9,18 @@ export default function Page() {
   const navigate = useNavigate();
   const [text, setText] = useState("");
 
-  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+  /**
+   * 줄바꿈 최대 1번 / 최대 40자 제한
+   */
+  const handleChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    const newValue = value
+      .split(/[\r\n]/)
+      .slice(0, 2)
+      .join("\n")
+      .slice(0, 40);
+
+    setText(newValue);
   };
 
   return (
@@ -31,7 +41,7 @@ export default function Page() {
         <div css={cardCss}>
           <img src="/images/rabbit_beta.png" alt="rabbit beta" css={imageCss} />
           <div css={textAreaWrapperCss}>
-            <textarea value={text} onChange={handleInput} rows={2} placeholder="덕담 메세지를 입력해줘" />
+            <textarea value={text} onChange={handleChangeTextarea} rows={2} placeholder="덕담 메세지를 입력해줘" />
             <div css={underlineCss}>
               <div />
               <div />
@@ -124,6 +134,7 @@ const textAreaWrapperCss = css`
     color: black;
     overflow: hidden;
     text-align: center;
+    z-index: 5;
   }
 `;
 
