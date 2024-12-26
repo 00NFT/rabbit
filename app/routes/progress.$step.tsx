@@ -42,7 +42,7 @@ export default function Game() {
   }, []);
 
   useEffect(() => {
-    setHeading(`다르게 생긴 ${target.label}을(를) 찾아줘`);
+    setHeading(`다르게 생긴 ${target.label} 찾아줘`);
   }, [target]);
 
   const handleDelayHeadingChange = async (text: string, delay: number = 1000, callback?: (obj?: any) => any) => {

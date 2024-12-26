@@ -36,10 +36,10 @@ export const GameContext = createContext<ContextProps | undefined>({
 });
 
 const INITIAL_STEP: TargetType[] = [
-  { label: "당근", value: "carrot" },
-  { label: "귀", value: "ear" },
-  { label: "달", value: "moon" },
-  { label: "절구", value: "mortar" },
+  { label: "당근을", value: "carrot" },
+  { label: "귀를", value: "ear" },
+  { label: "달을", value: "moon" },
+  { label: "절구를", value: "mortar" },
 ];
 
 export const GameProvider = ({ children }: Props) => {
