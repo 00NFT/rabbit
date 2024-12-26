@@ -29,9 +29,10 @@ export default function FlipCard({ delay = 100, duration = 1000, children, ...pr
 }
 
 const cardContainerCss = css`
-  width: 300px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
 
+  aspect-ratio: 3/4;
   perspective: 1000px;
   background-color: transparent;
 `;
