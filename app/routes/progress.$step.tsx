@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
 import { Header } from "~/components/header";
@@ -17,6 +17,8 @@ export default function Game() {
   const [showNextStep, setShowNextStep] = useState<boolean>(false);
   const [heading, setHeading] = useState<string>("");
 
+  const headingRef = useRef<NodeJS.Timeout>();
+
   const { start, stop, reset } = useTimer(PROGRESS_DURATION);
   const { generateGame, checkAnswer, cards, step, nextStep, target } = useGame();
 
@@ -32,17 +34,29 @@ export default function Game() {
   }, [step]);
 
   useEffect(() => {
+    return () => {
+      if (headingRef.current) {
+        clearTimeout(headingRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     setHeading(`다르게 생긴 ${target.label}를 찾아줘`);
   }, [target]);
 
-  const showNext = () => {
-    setTimeout(() => {
-      setHeading("다음 아이템을 찾으러 가볼까?");
-      setShowNextStep(true);
-    }, 2000); // ready for next step
+  const handleDelayHeadingChange = async (text: string, delay: number = 1000, callback?: (obj?: any) => any) => {
+    clearTimeout(headingRef.current);
+    return new Promise((resolve) => {
+      headingRef.current = setTimeout(() => {
+        setHeading(text);
+        !!callback ? callback() : null;
+        resolve(true);
+      }, delay);
+    });
   };
 
-  const handleClick = (card: CardType) => {
+  const handleClick = async (card: CardType) => {
     checkAnswer(card);
 
     const isLast = step === 4;
@@ -51,26 +65,28 @@ export default function Game() {
       stop();
       setSelect(card.id);
       if (card.isAnswer) {
-        setHeading("정답!");
+        await handleDelayHeadingChange("정답!", 0);
       } else {
-        setHeading("땡!");
-
-        setTimeout(() => {
+        await handleDelayHeadingChange("땡!", 0);
+        await handleDelayHeadingChange("여기에 있었어", 1000, () => {
           setShowAnswer(true);
-          setHeading("여기에 있었어");
-        }, 1000); //  delay (shown answer) after incorrect answer is selected
+        });
       }
+
       if (isLast) {
-        setTimeout(() => {
-          setHeading("모든 아이템을 다 찾아봤어!");
-        }, 1000);
-        setTimeout(() => {
-          setHeading("이제 달토끼를 보러 가자!");
-        }, 2000);
-        setTimeout(() => {
-          nextStep();
-        }, 3000);
-      } else showNext();
+        await handleDelayHeadingChange("모든 아이템을 다 찾아봤어!");
+        await handleDelayHeadingChange("이제 달토끼를 보러 가자!").then(() => {
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              nextStep();
+              resolve(true);
+            }, 1000);
+          });
+        });
+      } else
+        await handleDelayHeadingChange("다음 아이템을 찾으러 가볼까?", 1000, () => {
+          setShowNextStep(true);
+        });
     }
   };
 
