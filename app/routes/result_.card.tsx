@@ -29,7 +29,7 @@ export default function Page() {
         </h1>
 
         <div css={cardCss}>
-          image section
+          <img src="/images/rabbit_beta.png" alt="rabbit beta" css={imageCss} />
           <div css={textAreaWrapperCss}>
             <textarea value={text} onChange={handleInput} rows={2} placeholder="덕담 메세지를 입력해줘" />
             <div css={underlineCss}>
@@ -38,9 +38,11 @@ export default function Page() {
             </div>
           </div>
         </div>
+
+        <p css={descriptionCss}>최대 2줄, 40글자까지 작성 가능합니다</p>
       </div>
 
-      <FloatingBottomArea>
+      <FloatingBottomArea backgroundColor="#F0F4FC">
         <div css={buttonWrapper}>
           {/* NOTE: 베타테스트 버튼 */}
           <Button as="link" to="/result/feedback">
@@ -56,7 +58,8 @@ export default function Page() {
 }
 
 const containerCss = css`
-  padding: 64px 24px 0 24px;
+  padding: 64px 24px 16px 24px;
+  background-color: #f0f4fc;
 
   > h1 {
     font-size: 20px;
@@ -84,11 +87,21 @@ const navigationCss = css`
   }
 `;
 
+const imageCss = css`
+  width: 100%;
+  aspect-ratio: 1/1;
+
+  object-fit: cover;
+  border-radius: 12px;
+
+  background-color: #151528;
+`;
+
 const cardCss = css`
   padding: 16px 17px;
   margin-top: 24px;
-  background-color: #f1f1f1;
   border-radius: 16px;
+  background-color: #dde6fa;
 `;
 
 const textAreaWrapperCss = css`
@@ -135,4 +148,11 @@ const buttonWrapper = css`
   display: flex;
   gap: 10px;
   justify-content: center;
+`;
+
+const descriptionCss = css`
+  font-size: 10px;
+  color: #6b7ca1;
+  margin-top: 12px;
+  text-align: center;
 `;
