@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "@remix-run/react";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 
 export interface CardType {
   id: number;
@@ -44,10 +44,11 @@ const INITIAL_STEP: TargetType[] = [
 
 export const GameProvider = ({ children }: Props) => {
   const [userAnswer, setUserAnswer] = useState({});
-  const [restStep, setRestStep] = useState(INITIAL_STEP);
 
   const [cards, setCards] = useState<CardType[]>([]);
   const [target, setTarget] = useState({ label: "", value: "" }); // e.g. {label: "귀", value: "ear"}
+
+  const restStep = useRef(INITIAL_STEP);
 
   const params = useParams();
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ export const GameProvider = ({ children }: Props) => {
   const generateGame = () => {
     if (step - 1 !== Object.keys(userAnswer).length) navigate("/");
     const indexes = (step + 1) * (step + 1); // Lv1 - 2*2, Lv2 - 3*3, ...
-    const obj = restStep[Math.floor(Math.random() * restStep.length)]; // target object
+    const obj = restStep.current[Math.floor(Math.random() * restStep.current.length)]; // target object
     const answerPos = Math.floor(Math.random() * indexes); // wrong image position
 
     const cards: CardType[] = Array(indexes)
@@ -76,11 +77,11 @@ export const GameProvider = ({ children }: Props) => {
 
   const checkAnswer = (card: CardType) => {
     setUserAnswer((prev) => ({ ...prev, [card.step]: card.isAnswer }));
-    setRestStep(restStep.filter((item) => item.value !== card.step));
+    restStep.current = restStep.current.filter((item) => item.value !== card.step);
   };
 
   const nextStep = () => {
-    if (restStep.length) navigate(`/progress/${step + 1}`);
+    if (restStep.current.length) navigate(`/progress/${step + 1}`);
     else {
       // TODO: 결과에 따른 일러스트 인덱스를 naviagate state으로 전달
       navigate(`/result`);

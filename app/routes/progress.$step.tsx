@@ -1,7 +1,6 @@
 import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
 import FlipCard from "~/components/flip-card";
-import ProgressBar from "~/components/progress-bar";
 import { useGame } from "~/hooks/useGame";
 import { useTimer } from "~/hooks/useTimer";
 import { CardType } from "~/providers/game-provider";
@@ -16,8 +15,7 @@ export default function Game() {
   const [showNextStep, setShowNextStep] = useState<boolean>(false);
   const [heading, setHeading] = useState<string>("");
 
-  const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION);
-
+  const { start, stop, reset } = useTimer(PROGRESS_DURATION);
   const { generateGame, checkAnswer, cards, step, nextStep, target } = useGame();
 
   useEffect(() => {
@@ -35,32 +33,42 @@ export default function Game() {
     setHeading(`다르게 생긴 ${target.label}를 찾아줘`);
   }, [target]);
 
+  const showNext = () => {
+    setTimeout(() => {
+      setHeading("다음 아이템을 찾으러 가볼까?");
+      setShowNextStep(true);
+    }, 2000); // ready for next step
+  };
+
   const handleClick = (card: CardType) => {
+    checkAnswer(card);
+
+    const isLast = step === 4;
+
     if (!select) {
       stop();
       setSelect(card.id);
       if (card.isAnswer) {
         setHeading("정답!");
-
-        setTimeout(() => {
-          setShowAnswer(true);
-          setShowNextStep(true);
-          setHeading("다음 아이템을 찾으러 가볼까?");
-        }, 2000); // ready for next step
       } else {
         setHeading("땡!");
 
         setTimeout(() => {
           setShowAnswer(true);
           setHeading("여기에 있었어");
-        }, 800); //  delay (shown answer) after incorrect answer is selected
-        setTimeout(() => {
-          setHeading("다음 아이템을 찾으러 가볼까?");
-          setShowNextStep(true);
-        }, 1600); // ready for next step
+        }, 1000); //  delay (shown answer) after incorrect answer is selected
       }
-
-      checkAnswer(card);
+      if (isLast) {
+        setTimeout(() => {
+          setHeading("모든 아이템을 다 찾아봤어!");
+        }, 1000);
+        setTimeout(() => {
+          setHeading("이제 달토끼를 보러 가자!");
+        }, 2000);
+        setTimeout(() => {
+          nextStep();
+        }, 3000);
+      } else showNext();
     }
   };
 
@@ -68,7 +76,7 @@ export default function Game() {
     <>
       <div css={containerCss}>
         <h1>{heading}</h1>
-        <ProgressBar progress={progress} />
+        {/* <ProgressBar progress={progress} /> */}
         <div css={imageGridCss(step + 1)}>
           {cards.map((card: CardType, idx: number) => (
             <FlipCard key={`${cards.length}_${idx}`} onClick={() => handleClick(card)} delay={FLIP_DELAY} duration={FLIP_DURATION}>
@@ -78,7 +86,7 @@ export default function Game() {
                   showAnswer
                     ? card.isAnswer
                       ? "border: 1.5px solid black;"
-                      : "border: 1px solid white;"
+                      : "border: 1px solid white; opacity: 0.6;"
                     : !select
                       ? "border: 1px solid white;"
                       : select === card.id
