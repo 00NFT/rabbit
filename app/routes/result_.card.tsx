@@ -1,7 +1,8 @@
 import { css } from "@emotion/react";
-import { Link, useNavigate } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
 import { useState } from "react";
+import { Button } from "~/components/button";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
 
 export default function Page() {
@@ -40,14 +41,14 @@ export default function Page() {
       </div>
 
       <FloatingBottomArea>
-        <div css={buttons.wrapperCss}>
+        <div css={buttonWrapper}>
           {/* NOTE: 베타테스트 버튼 */}
-          <Link to={"/result/feedback"} css={buttons.shareButtonCss}>
+          <Button as="link" to="/result/feedback">
             베타테스트 후기 남기기
-          </Link>
+          </Button>
 
-          {/* <button css={buttons.downloadButtonCss}>카드 다운로드</button>
-        <button css={buttons.shareButtonCss}>결과 공유하기</button> */}
+          {/* <Button buttonType="secondary">카드 다운로드</Button>
+          <Button>결과 공유하기</Button> */}
         </div>
       </FloatingBottomArea>
     </>
@@ -128,31 +129,10 @@ const underlineCss = css`
   }
 `;
 
-const buttons = {
-  wrapperCss: css`
-    width: 100%;
+const buttonWrapper = css`
+  width: 100%;
 
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-
-    > button,
-    a {
-      width: 100%;
-      text-align: center;
-      border-radius: 8px;
-      padding: 16px 0;
-      font-size: 14px;
-    }
-  `,
-
-  downloadButtonCss: css`
-    color: #151528;
-    background-color: #c1c1c1;
-  `,
-
-  shareButtonCss: css`
-    color: white;
-    background-color: #151528;
-  `,
-};
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+`;
