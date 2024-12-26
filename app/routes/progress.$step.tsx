@@ -121,13 +121,6 @@ export default function Game() {
               </FlipCard>
             ))}
           </div>
-          {/* {showNextStep && (
-          <div css={buttons.wrapperCss}>
-            <button css={buttons.cardButtonCss} onClick={nextStep}>
-              찾으러 가기
-            </button>
-          </div>
-        )} */}
           {showNextStep && <Button onClick={nextStep}>찾으러 가기</Button>}
         </div>
       </div>
