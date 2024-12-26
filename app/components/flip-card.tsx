@@ -19,6 +19,7 @@ export default function FlipCard({ delay = 100, duration = 1000, children, ...pr
     <div css={[cardContainerCss, flip && flipCss]} {...props}>
       <div css={[innerCss(duration / 1000), flip && flipCss]}>
         <div css={[cardCss, backfaceCss]}>
+          {/** not work, but no used */}
           <div>뒷면</div>
         </div>
         <div css={[cardCss]}>{children}</div>

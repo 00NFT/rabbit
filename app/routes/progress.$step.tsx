@@ -7,14 +7,15 @@ import { useGame } from "~/hooks/useGame";
 import { useTimer } from "~/hooks/useTimer";
 import { CardType } from "~/providers/game-provider";
 
+type StatusType = "PENDING" | "SELECTED" | "SUCCESS" | "FAILURE" | "REVEALED" | "READY";
+
 const FLIP_DELAY = 100; // ms
 const FLIP_DURATION = 500; // ms
 const PROGRESS_DURATION = FLIP_DELAY + FLIP_DURATION + 3000; // Flip delay time + Flip duration time + 3s
 
 export default function Game() {
   const [select, setSelect] = useState<number | null>(null); // user select
-  const [showAnswer, setShowAnswer] = useState<boolean>(false);
-  const [showNextStep, setShowNextStep] = useState<boolean>(false);
+  const [status, setStatus] = useState<StatusType>("PENDING");
   const [heading, setHeading] = useState<string>("");
 
   const headingRef = useRef<NodeJS.Timeout>();
@@ -25,9 +26,8 @@ export default function Game() {
   useEffect(() => {
     generateGame();
     reset();
+    setStatus("PENDING");
     setSelect(null);
-    setShowAnswer(false);
-    setShowNextStep(false);
     setTimeout(() => {
       start();
     }, FLIP_DELAY);
@@ -42,7 +42,7 @@ export default function Game() {
   }, []);
 
   useEffect(() => {
-    setHeading(`다르게 생긴 ${target.label}를 찾아줘`);
+    setHeading(`다르게 생긴 ${target.label}을(를) 찾아줘`);
   }, [target]);
 
   const handleDelayHeadingChange = async (text: string, delay: number = 1000, callback?: (obj?: any) => any) => {
@@ -65,11 +65,13 @@ export default function Game() {
       stop();
       setSelect(card.id);
       if (card.isAnswer) {
+        setStatus("SUCCESS");
         await handleDelayHeadingChange("정답!", 0);
       } else {
+        setStatus("FAILURE");
         await handleDelayHeadingChange("땡!", 0);
         await handleDelayHeadingChange("여기에 있었어", 800, () => {
-          setShowAnswer(true);
+          setStatus("REVEALED");
         });
       }
 
@@ -85,7 +87,7 @@ export default function Game() {
         });
       } else
         await handleDelayHeadingChange("다음 아이템을 찾으러 가볼까?", 2000, () => {
-          setShowNextStep(true);
+          setStatus("READY");
         });
     }
   };
@@ -103,7 +105,7 @@ export default function Game() {
                 <div
                   css={[
                     cardCss,
-                    showAnswer
+                    status === "REVEALED" || status === "READY"
                       ? card.isAnswer
                         ? "border: 1.5px solid black;"
                         : "border: 1px solid white; opacity: 0.6;"
@@ -121,7 +123,7 @@ export default function Game() {
               </FlipCard>
             ))}
           </div>
-          {showNextStep && <Button onClick={nextStep}>찾으러 가기</Button>}
+          {status === "READY" && <Button onClick={nextStep}>찾으러 가기</Button>}
         </div>
       </div>
     </>
