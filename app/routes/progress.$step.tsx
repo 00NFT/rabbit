@@ -1,32 +1,28 @@
 import { css } from "@emotion/react";
-import { Link, useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import FlipCard from "~/components/flip-card";
 import ProgressBar from "~/components/progress-bar";
+import { useGame } from "~/hooks/useGame";
 import { useTimer } from "~/hooks/useTimer";
-
-interface CardType {
-  id: number;
-  isAnswer: boolean;
-}
+import { CardType } from "~/providers/game-provider";
 
 const FLIP_DELAY = 100; // ms
 const FLIP_DURATION = 500; // ms
 const PROGRESS_DURATION = FLIP_DELAY + FLIP_DURATION + 3000; // Flip delay time + Flip duration time + 3s
 
 export default function Game() {
-  const { step } = useParams();
   const [select, setSelect] = useState<number | null>(null); // user select
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
 
   const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION);
 
-  const cardLength = (Number(step) + 1) * (Number(step) + 1);
+  const { generateGame, checkAnswer, cards, step, nextStep, target } = useGame();
 
   useEffect(() => {
     reset();
     setSelect(null);
     setShowAnswer(false);
+    generateGame();
     setTimeout(() => {
       start();
     }, FLIP_DELAY);
@@ -42,23 +38,18 @@ export default function Game() {
         setTimeout(() => {
           setShowAnswer(true);
         }, 2000); // delay after incorrect answer is selected
+      checkAnswer(card);
     }
   };
-
-  if (!step) return <div>로딩중</div>;
-
-  const dummy = Array(cardLength)
-    .fill(null)
-    .map((card, idx) => ({ ...card, id: cardLength * (idx + 1), isAnswer: idx === 1 })); // card.id must start with 1
 
   return (
     <>
       <div css={containerCss}>
-        <h1>다르게 생긴 {}를 찾아줘</h1>
+        <h1>다르게 생긴 {target?.label}를 찾아줘</h1>
         <ProgressBar progress={progress} />
         <div css={imageGridCss(Number(step) + 1)}>
-          {dummy.map((card, idx) => (
-            <FlipCard key={`${cardLength}_${idx}`} onClick={() => handleClick(card)} delay={FLIP_DELAY} duration={FLIP_DURATION}>
+          {cards.map((card: CardType, idx: number) => (
+            <FlipCard key={`${cards.length}_${idx}`} onClick={() => handleClick(card)} delay={FLIP_DELAY} duration={FLIP_DURATION}>
               <div
                 css={[
                   cardCss,
@@ -75,16 +66,16 @@ export default function Game() {
                         : "border: 1px solid white;",
                 ]}
               >
-                {idx + 1}번째 이미지 ({card.isAnswer.toString()})
+                <img src={card.image} />
               </div>
             </FlipCard>
           ))}
         </div>
         {showAnswer && (
           <div css={buttons.wrapperCss}>
-            <Link to={`/progress/${Number(step) + 1}`} css={buttons.cardButtonCss}>
+            <button css={buttons.cardButtonCss} onClick={nextStep}>
               찾으러 가기
-            </Link>
+            </button>
           </div>
         )}
       </div>
@@ -139,6 +130,11 @@ const cardCss = css`
   align-items: center;
   background-color: white;
   border-radius: 12px;
+
+  > img {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 /* 공통 컴포넌트 필요 feat. @Jungjjyeong */
