@@ -1,7 +1,10 @@
 import { css } from "@emotion/react";
 import { type PropsWithChildren, useEffect, useRef, useState } from "react";
 
-export const FloatingBottomArea = ({ children }: PropsWithChildren) => {
+type Props = {
+  backgroundColor?: string;
+} & PropsWithChildren;
+export const FloatingBottomArea = ({ backgroundColor = "#FFFFFF", children }: Props) => {
   const childrenRef = useRef<HTMLDivElement>(null);
   const [childrenHeight, setChildrenHeight] = useState(0);
 
@@ -14,7 +17,13 @@ export const FloatingBottomArea = ({ children }: PropsWithChildren) => {
 
   return (
     <>
-      <div css={containerCss} ref={childrenRef}>
+      <div
+        css={containerCss}
+        ref={childrenRef}
+        style={{
+          backgroundColor,
+        }}
+      >
         {children}
       </div>
       <div
@@ -38,6 +47,4 @@ const containerCss = css`
   display: flex;
   gap: 10px;
   justify-content: center;
-
-  background-color: white;
 `;

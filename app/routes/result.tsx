@@ -29,8 +29,10 @@ export default function Page() {
 
 const containerCss = css`
   padding-top: 42px;
-  /* background image 첨부 예정 */
-  /* background-image: ; */
+  height: 100vh;
+
+  background: #151528 url("/images/rabbit_beta.png") center/cover no-repeat;
+  background-color: #151528;
 `;
 
 const textWrapperCss = css`
@@ -39,6 +41,7 @@ const textWrapperCss = css`
   justify-content: center;
   align-items: center;
   text-align: center;
+  color: white;
 
   > h1 {
     font-weight: 400;
