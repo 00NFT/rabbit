@@ -1,12 +1,10 @@
 import { css } from "@emotion/react";
-import { useNavigate } from "@remix-run/react";
-import { ArrowLeft } from "public/icons/Arrow";
 import { useState } from "react";
 import { Button } from "~/components/button";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
+import { Header } from "~/components/header";
 
 export default function Page() {
-  const navigate = useNavigate();
   const [text, setText] = useState("");
 
   /**
@@ -25,11 +23,7 @@ export default function Page() {
 
   return (
     <>
-      <nav css={navigationCss}>
-        <button onClick={() => navigate(-1)}>
-          <ArrowLeft />
-        </button>
-      </nav>
+      <Header backgroundColor="#f0f4fc" />
 
       <div css={containerCss}>
         <h1>
@@ -68,32 +62,13 @@ export default function Page() {
 }
 
 const containerCss = css`
-  padding: 64px 24px 16px 24px;
+  padding: 0px 24px 16px;
   background-color: #f0f4fc;
 
   > h1 {
     font-size: 20px;
     text-align: center;
-    margin-top: 12px;
-  }
-`;
-
-const navigationCss = css`
-  position: absolute;
-  top: 0;
-
-  display: flex;
-  align-items: center;
-
-  max-width: 600px;
-  width: 100%;
-  height: 64px;
-
-  margin: 0 auto;
-  padding: 0 20px;
-
-  > button {
-    padding: 10px 20px 10px 0;
+    padding-top: 12px;
   }
 `;
 
