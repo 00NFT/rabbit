@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
 import { useState } from "react";
+import { Button } from "~/components/button";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
 import { Textarea } from "~/components/text-area";
 
@@ -28,6 +29,11 @@ export default function Page() {
       ...prev,
       [type]: value,
     }));
+  };
+
+  // NOTE: api 연동
+  const handleSubmit = () => {
+    navigate("/result/feedback-complete");
   };
 
   return (
@@ -101,9 +107,7 @@ export default function Page() {
       </div>
 
       <FloatingBottomArea>
-        <div css={buttons.wrapperCss}>
-          <button css={buttons.submitButtonCss}>제출하기</button>
-        </div>
+        <Button onClick={handleSubmit}>제출하기</Button>
       </FloatingBottomArea>
     </>
   );
@@ -150,28 +154,5 @@ const feedbacks = {
 
   headlineCss: css`
     font-size: 16px;
-  `,
-};
-
-const buttons = {
-  wrapperCss: css`
-    width: 100%;
-
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-
-    > button {
-      width: 100%;
-      text-align: center;
-      border-radius: 8px;
-      padding: 16px 0;
-      font-size: 14px;
-    }
-  `,
-
-  submitButtonCss: css`
-    color: white;
-    background-color: #151528;
   `,
 };

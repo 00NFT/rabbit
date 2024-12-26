@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { Dispatch, Fragment, SetStateAction } from "react";
 
-type textareaProps = {
+type Props = {
   limit: number;
   currentLength: number;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -18,7 +18,7 @@ export const Textarea = ({
   height,
   setHeight,
   ...props
-}: textareaProps) => {
+}: Props) => {
   const LIMIT = limit;
 
   return (
