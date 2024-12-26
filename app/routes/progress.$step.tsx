@@ -1,6 +1,8 @@
 import { css } from "@emotion/react";
 import { useEffect, useState } from "react";
+import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
+import { Header } from "~/components/header";
 import { useGame } from "~/hooks/useGame";
 import { useTimer } from "~/hooks/useTimer";
 import { CardType } from "~/providers/game-provider";
@@ -75,51 +77,59 @@ export default function Game() {
   return (
     <>
       <div css={containerCss}>
+        <Header />
         <h1>{heading}</h1>
-        {/* <ProgressBar progress={progress} /> */}
-        <div css={imageGridCss(step + 1)}>
-          {cards.map((card: CardType, idx: number) => (
-            <FlipCard key={`${cards.length}_${idx}`} onClick={() => handleClick(card)} delay={FLIP_DELAY} duration={FLIP_DURATION}>
-              <div
-                css={[
-                  cardCss,
-                  showAnswer
-                    ? card.isAnswer
-                      ? "border: 1.5px solid black;"
-                      : "border: 1px solid white; opacity: 0.6;"
-                    : !select
-                      ? "border: 1px solid white;"
-                      : select === card.id
-                        ? card.isAnswer
-                          ? "border: 1.5px solid black;"
-                          : "border: 1.5px solid red;"
-                        : "border: 1px solid white;",
-                ]}
-              >
-                <img src={card.image} />
-              </div>
-            </FlipCard>
-          ))}
-        </div>
-        {showNextStep && (
+        <div>
+          {/* <ProgressBar progress={progress} /> */}
+          <div css={imageGridCss(step + 1)}>
+            {cards.map((card: CardType, idx: number) => (
+              <FlipCard key={`${cards.length}_${idx}`} onClick={() => handleClick(card)} delay={FLIP_DELAY} duration={FLIP_DURATION}>
+                <div
+                  css={[
+                    cardCss,
+                    showAnswer
+                      ? card.isAnswer
+                        ? "border: 1.5px solid black;"
+                        : "border: 1px solid white; opacity: 0.6;"
+                      : !select
+                        ? "border: 1px solid white;"
+                        : select === card.id
+                          ? card.isAnswer
+                            ? "border: 1.5px solid black;"
+                            : "border: 1.5px solid red;"
+                          : "border: 1px solid white;",
+                  ]}
+                >
+                  <img src={card.image} />
+                </div>
+              </FlipCard>
+            ))}
+          </div>
+          {/* {showNextStep && (
           <div css={buttons.wrapperCss}>
             <button css={buttons.cardButtonCss} onClick={nextStep}>
               찾으러 가기
             </button>
           </div>
-        )}
+        )} */}
+          {showNextStep && <Button onClick={nextStep}>찾으러 가기</Button>}
+        </div>
       </div>
     </>
   );
 }
 
 const containerCss = css`
+  position: relative;
+
   height: 100%;
 
-  padding: 0 24px;
-
-  background-color: #f0f4fc;
+  background-color: #f9f9f9;
   text-align: center;
+
+  > nav {
+    background-color: #f9f9f9 !important;
+  }
 
   > h1 {
     margin-top: 4px;
@@ -127,6 +137,10 @@ const containerCss = css`
     font-weight: 400;
     font-size: 20px;
     line-height: 34px;
+  }
+
+  > div {
+    padding: 0 24px;
   }
 `;
 
@@ -166,34 +180,3 @@ const cardCss = css`
     height: auto;
   }
 `;
-
-/* 공통 컴포넌트 필요 feat. @Jungjjyeong */
-const buttons = {
-  wrapperCss: css`
-    position: fixed;
-    bottom: 0;
-
-    width: 100%;
-    max-width: 600px;
-    margin: 0 -24px 0;
-    padding: 12px 24px 32px;
-
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    justify-content: center;
-
-    > a {
-      text-align: center;
-    }
-  `,
-
-  cardButtonCss: css`
-    font-size: 14px;
-    padding: 16px 0;
-    border-radius: 8px;
-
-    color: white;
-    background-color: #151528;
-  `,
-};
