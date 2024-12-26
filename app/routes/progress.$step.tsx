@@ -13,31 +13,53 @@ const PROGRESS_DURATION = FLIP_DELAY + FLIP_DURATION + 3000; // Flip delay time 
 export default function Game() {
   const [select, setSelect] = useState<number | null>(null); // user select
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [showNextStep, setShowNextStep] = useState<boolean>(false);
+  const [heading, setHeading] = useState<string>("");
 
   const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION);
 
   const { generateGame, checkAnswer, cards, step, nextStep, target } = useGame();
 
   useEffect(() => {
+    generateGame();
     reset();
     setSelect(null);
     setShowAnswer(false);
-    generateGame();
+    setShowNextStep(false);
     setTimeout(() => {
       start();
     }, FLIP_DELAY);
   }, [step]);
+
+  useEffect(() => {
+    setHeading(`다르게 생긴 ${target.label}를 찾아줘`);
+  }, [target]);
 
   const handleClick = (card: CardType) => {
     if (!select) {
       stop();
       setSelect(card.id);
       if (card.isAnswer) {
-        setShowAnswer(true);
-      } else
+        setHeading("정답!");
+
         setTimeout(() => {
           setShowAnswer(true);
-        }, 2000); // delay after incorrect answer is selected
+          setShowNextStep(true);
+          setHeading("다음 아이템을 찾으러 가볼까?");
+        }, 2000); // ready for next step
+      } else {
+        setHeading("땡!");
+
+        setTimeout(() => {
+          setShowAnswer(true);
+          setHeading("여기에 있었어");
+        }, 800); //  delay (shown answer) after incorrect answer is selected
+        setTimeout(() => {
+          setHeading("다음 아이템을 찾으러 가볼까?");
+          setShowNextStep(true);
+        }, 1600); // ready for next step
+      }
+
       checkAnswer(card);
     }
   };
@@ -45,9 +67,9 @@ export default function Game() {
   return (
     <>
       <div css={containerCss}>
-        <h1>다르게 생긴 {target?.label}를 찾아줘</h1>
+        <h1>{heading}</h1>
         <ProgressBar progress={progress} />
-        <div css={imageGridCss(Number(step) + 1)}>
+        <div css={imageGridCss(step + 1)}>
           {cards.map((card: CardType, idx: number) => (
             <FlipCard key={`${cards.length}_${idx}`} onClick={() => handleClick(card)} delay={FLIP_DELAY} duration={FLIP_DURATION}>
               <div
@@ -55,14 +77,14 @@ export default function Game() {
                   cardCss,
                   showAnswer
                     ? card.isAnswer
-                      ? "border: 1px solid black;"
+                      ? "border: 1.5px solid black;"
                       : "border: 1px solid white;"
                     : !select
                       ? "border: 1px solid white;"
                       : select === card.id
                         ? card.isAnswer
-                          ? "border: 1px solid black;"
-                          : "border: 1px solid red;"
+                          ? "border: 1.5px solid black;"
+                          : "border: 1.5px solid red;"
                         : "border: 1px solid white;",
                 ]}
               >
@@ -71,7 +93,7 @@ export default function Game() {
             </FlipCard>
           ))}
         </div>
-        {showAnswer && (
+        {showNextStep && (
           <div css={buttons.wrapperCss}>
             <button css={buttons.cardButtonCss} onClick={nextStep}>
               찾으러 가기
