@@ -11,7 +11,8 @@ export default function FlipCard({ delay = 100, duration = 1000, children, ...pr
   const [flip, setFlip] = useState<boolean>(false);
 
   useEffect(() => {
-    setTimeout(() => setFlip(true), delay);
+    let delayFlip = setTimeout(() => setFlip(true), delay);
+    return () => clearTimeout(delayFlip);
   }, []);
 
   return (
