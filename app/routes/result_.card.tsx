@@ -1,25 +1,29 @@
 import { css } from "@emotion/react";
-import { useNavigate } from "@remix-run/react";
-import { ArrowLeft } from "public/icons/Arrow";
 import { useState } from "react";
 import { Button } from "~/components/button";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
+import { Header } from "~/components/header";
 
 export default function Page() {
-  const navigate = useNavigate();
   const [text, setText] = useState("");
 
-  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+  /**
+   * 줄바꿈 최대 1번 / 최대 40자 제한
+   */
+  const handleChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    const newValue = value
+      .split(/[\r\n]/)
+      .slice(0, 2)
+      .join("\n")
+      .slice(0, 40);
+
+    setText(newValue);
   };
 
   return (
     <>
-      <nav css={navigationCss}>
-        <button onClick={() => navigate(-1)}>
-          <ArrowLeft />
-        </button>
-      </nav>
+      <Header backgroundColor="#f0f4fc" />
 
       <div css={containerCss}>
         <h1>
@@ -31,7 +35,7 @@ export default function Page() {
         <div css={cardCss}>
           <img src="/images/rabbit_beta.png" alt="rabbit beta" css={imageCss} />
           <div css={textAreaWrapperCss}>
-            <textarea value={text} onChange={handleInput} rows={2} placeholder="덕담 메세지를 입력해줘" />
+            <textarea value={text} onChange={handleChangeTextarea} rows={2} placeholder="덕담 메세지를 입력해줘" />
             <div css={underlineCss}>
               <div />
               <div />
@@ -58,32 +62,13 @@ export default function Page() {
 }
 
 const containerCss = css`
-  padding: 64px 24px 16px 24px;
+  padding: 0px 24px 16px;
   background-color: #f0f4fc;
 
   > h1 {
     font-size: 20px;
     text-align: center;
-    margin-top: 12px;
-  }
-`;
-
-const navigationCss = css`
-  position: absolute;
-  top: 0;
-
-  display: flex;
-  align-items: center;
-
-  max-width: 600px;
-  width: 100%;
-  height: 64px;
-
-  margin: 0 auto;
-  padding: 0 20px;
-
-  > button {
-    padding: 10px 20px 10px 0;
+    padding-top: 12px;
   }
 `;
 
@@ -124,6 +109,7 @@ const textAreaWrapperCss = css`
     color: black;
     overflow: hidden;
     text-align: center;
+    z-index: 5;
   }
 `;
 

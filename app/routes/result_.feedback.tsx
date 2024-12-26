@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import { useNavigate } from "@remix-run/react";
-import { ArrowLeft } from "public/icons/Arrow";
 import { useState } from "react";
 import { Button } from "~/components/button";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
+import { Header } from "~/components/header";
 import { Textarea } from "~/components/text-area";
 
 type FeedbackValues = {
@@ -38,11 +38,7 @@ export default function Page() {
 
   return (
     <>
-      <nav css={navigationCss}>
-        <button onClick={() => navigate(-1)}>
-          <ArrowLeft />
-        </button>
-      </nav>
+      <Header />
 
       <div css={containerCss}>
         <h1>베타테스트 후기</h1>
@@ -117,31 +113,12 @@ const containerCss = css`
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding: 64px 24px 32px 24px;
+  padding: 0px 24px 32px;
 
   > h1 {
     font-size: 20px;
     text-align: center;
     margin-top: 12px;
-  }
-`;
-
-const navigationCss = css`
-  position: absolute;
-  top: 0;
-
-  display: flex;
-  align-items: center;
-
-  max-width: 600px;
-  width: 100%;
-  height: 64px;
-
-  margin: 0 auto;
-  padding: 0 20px;
-
-  > button {
-    padding: 10px 20px 10px 0;
   }
 `;
 
