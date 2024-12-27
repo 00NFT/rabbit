@@ -1,2 +1,8 @@
-addReviewers: false
+addReviewers: true
 addAssignees: author
+
+# 자동 Reviewers로 추가할 사용자
+reviewers:
+  - Jungjjeong
+  - klmhyeonwoo
+  - Chaemin-L
