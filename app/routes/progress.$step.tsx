@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
+import { FloatingBottomArea } from "~/components/floating-bottom-area";
 import { Header } from "~/components/header";
 import ProgressBar from "~/components/progress-bar";
 import { useGame } from "~/hooks/useGame";
@@ -106,7 +107,7 @@ export default function Game() {
       <div css={containerCss}>
         <Header />
         <h1>{heading}</h1>
-        <div>
+        <div css={paddingWrapperCss}>
           <ProgressBar progress={progress} />
           <div css={imageGridCss(step + 1)}>
             {cards.map((card: CardType, idx: number) => (
@@ -132,16 +133,18 @@ export default function Game() {
               </FlipCard>
             ))}
           </div>
-          {status === "READY" && <Button onClick={nextStep}>찾으러 가기</Button>}
         </div>
+        {status === "READY" && (
+          <FloatingBottomArea backgroundColor="#f9f9f9">
+            <Button onClick={nextStep}>찾으러 가기</Button>
+          </FloatingBottomArea>
+        )}
       </div>
     </>
   );
 }
 
 const containerCss = css`
-  position: relative;
-
   height: 100%;
 
   background-color: #f9f9f9;
@@ -158,10 +161,10 @@ const containerCss = css`
     font-size: 20px;
     line-height: 34px;
   }
+`;
 
-  > div {
-    padding: 0 24px;
-  }
+const paddingWrapperCss = css`
+  padding: 0 24px;
 `;
 
 const imageGridCss = (gridCnt: number) => css`
@@ -169,11 +172,11 @@ const imageGridCss = (gridCnt: number) => css`
   grid-template-columns: repeat(${gridCnt}, 1fr);
   gap: 12px;
 
-  height: calc(100% - 200px);
+  height: calc(100% - 100px);
   max-width: 100%;
   aspect-ratio: 3/4;
 
-  margin: 28px auto;
+  margin: 28px 0;
 
   cursor: pointer;
 
@@ -196,7 +199,7 @@ const cardCss = css`
   background-color: white;
   border-radius: 12px;
 
-  > object {
+  > img {
     width: 100%;
     height: auto;
 
