@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
 import { Header } from "~/components/header";
+import ProgressBar from "~/components/progress-bar";
 import { useGame } from "~/hooks/useGame";
 import { useTimer } from "~/hooks/useTimer";
 import { CardType } from "~/providers/game-provider";
@@ -20,8 +21,8 @@ export default function Game() {
 
   const headingRef = useRef<NodeJS.Timeout>();
 
-  const { start, stop, reset } = useTimer(PROGRESS_DURATION);
-  const { generateGame, checkAnswer, cards, step, nextStep, target } = useGame();
+  const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION);
+  const { generateGame, checkAnswer, timeover, cards, step, nextStep, target } = useGame();
 
   useEffect(() => {
     generateGame();
@@ -45,12 +46,20 @@ export default function Game() {
     setHeading(`다르게 생긴 ${target.label} 찾아줘`);
   }, [target]);
 
+  useEffect(() => {
+    // timeover
+    if (progress === 100) {
+      timeover();
+      handleClick({ id: 0, isAnswer: false, image: "" });
+    }
+  }, [progress]);
+
   const handleDelayHeadingChange = async (text: string, delay: number = 1000, callback?: (obj?: any) => any) => {
     clearTimeout(headingRef.current);
     return new Promise((resolve) => {
       headingRef.current = setTimeout(() => {
         setHeading(text);
-        !!callback ? callback() : null;
+        callback?.();
         resolve(true);
       }, delay);
     });
@@ -98,7 +107,7 @@ export default function Game() {
         <Header />
         <h1>{heading}</h1>
         <div>
-          {/* <ProgressBar progress={progress} /> */}
+          <ProgressBar progress={progress} />
           <div css={imageGridCss(step + 1)}>
             {cards.map((card: CardType, idx: number) => (
               <FlipCard key={`${cards.length}_${idx}`} onClick={() => handleClick(card)} delay={FLIP_DELAY} duration={FLIP_DURATION}>
@@ -118,7 +127,7 @@ export default function Game() {
                           : "border: 1px solid white;",
                   ]}
                 >
-                  <img src={card.image} />
+                  <img src={card.image} width={100} height={100} />
                 </div>
               </FlipCard>
             ))}
@@ -186,8 +195,10 @@ const cardCss = css`
   background-color: white;
   border-radius: 12px;
 
-  > img {
+  > object {
     width: 100%;
     height: auto;
+
+    object-fit: contain;
   }
 `;

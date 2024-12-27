@@ -3,7 +3,6 @@ import { createContext, useEffect, useRef, useState } from "react";
 
 export interface CardType {
   id: number;
-  step: string;
   image: string;
   isAnswer: boolean;
 }
@@ -16,6 +15,7 @@ export interface TargetType {
 interface ContextProps {
   generateGame: () => void;
   checkAnswer: (card: CardType) => void;
+  timeover: () => void;
   cards: CardType[];
   step: number;
   nextStep: () => void;
@@ -27,6 +27,7 @@ interface Props {
 }
 
 export const GameContext = createContext<ContextProps | undefined>({
+  timeover: () => {},
   generateGame: () => {},
   checkAnswer: ({}) => {},
   cards: [],
@@ -61,12 +62,13 @@ export const GameProvider = ({ children }: Props) => {
 
   const generateGame = () => {
     if (step - 1 !== Object.keys(userAnswer).length) navigate("/");
+
     const indexes = (step + 1) * (step + 1); // Lv1 - 2*2, Lv2 - 3*3, ...
     const obj = restStep.current[Math.floor(Math.random() * restStep.current.length)]; // target object
     const answerPos = Math.floor(Math.random() * indexes); // wrong image position
 
     const cards: CardType[] = Array(indexes)
-      .fill({ step: obj.value, image: `/illusts/${obj.value}.svg`, isAnswer: false })
+      .fill({ image: `/illusts/${obj.value}.svg`, isAnswer: false })
       .map((card, idx) => ({ ...card, id: indexes * (idx + 1) }));
     cards[answerPos].isAnswer = true;
     cards[answerPos].image = `/illusts/${obj.value}2.svg`;
@@ -76,8 +78,13 @@ export const GameProvider = ({ children }: Props) => {
   };
 
   const checkAnswer = (card: CardType) => {
-    setUserAnswer((prev) => ({ ...prev, [card.step]: card.isAnswer }));
-    restStep.current = restStep.current.filter((item) => item.value !== card.step);
+    setUserAnswer((prev) => ({ ...prev, [target.value]: card.isAnswer }));
+    restStep.current = restStep.current.filter((item) => item.value !== target.value);
+  };
+
+  const timeover = () => {
+    setUserAnswer((prev) => ({ ...prev, [target.value]: false }));
+    restStep.current = restStep.current.filter((item) => item.value !== target.value);
   };
 
   const nextStep = () => {
@@ -88,5 +95,5 @@ export const GameProvider = ({ children }: Props) => {
     }
   };
 
-  return <GameContext.Provider value={{ generateGame, checkAnswer, cards, step, nextStep, target }}>{children}</GameContext.Provider>;
+  return <GameContext.Provider value={{ generateGame, checkAnswer, timeover, cards, step, nextStep, target }}>{children}</GameContext.Provider>;
 };
