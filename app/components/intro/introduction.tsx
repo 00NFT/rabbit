@@ -7,13 +7,15 @@ import { ANIMATION } from "~/utils/animation";
 import Marquee from "react-fast-marquee";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 import { useEffect, useState } from "react";
+import { useNavigate } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
 };
 
 export default function Introduction() {
-  const { increasePhase, decreasePhase, name } = usePhaseActions();
+  const { decreasePhase, movePhase, name } = usePhaseActions();
+  const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const assets = ["carrot", "ears", "moon", "bucket"];
 
@@ -64,7 +66,13 @@ export default function Introduction() {
         </div>
       </div>
       <div css={buttons.wrapperCss}>
-        <Button onClick={increasePhase} css={visibleEffectCss(isVisible)}>
+        <Button
+          onClick={() => {
+            movePhase(0);
+            navigate("/progress/1");
+          }}
+          css={visibleEffectCss(isVisible)}
+        >
           틀린그림 찾기 하러 가기
         </Button>
       </div>
