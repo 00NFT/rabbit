@@ -14,12 +14,17 @@
     "@emotion/css": "^11.13.5",
     "@emotion/react": "^11.13.5",
     "@emotion/server": "^11.11.0",
+    "@react-spring/web": "^9.7.5",
     "@remix-run/node": "^2.15.0",
     "@remix-run/react": "^2.15.0",
     "@remix-run/serve": "^2.15.0",
+    "framer-motion": "^11.15.0",
     "isbot": "^4.1.0",
+    "jotai": "^2.11.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-fast-marquee": "^1.6.5",
+    "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.13.5",

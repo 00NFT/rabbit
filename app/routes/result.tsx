@@ -14,7 +14,6 @@ export default function Page() {
         </div>
       </div>
 
-      {/* cta button 공통 컴포넌트 필요 */}
       <div css={buttons.wrapperCss}>
         <Link to={"/result/card"} css={buttons.cardButtonCss}>
           새해 덕담카드 만들기
