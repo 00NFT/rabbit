@@ -18,8 +18,10 @@ export default function FlipCard({ delay = 100, duration = 1000, children, ...pr
   return (
     <div css={[cardContainerCss, flip && flipCss]} {...props}>
       <div css={[innerCss(duration / 1000), flip && flipCss]}>
+        <div css={[cardCss, backfaceCss]}>
+          <div css={backfaceInnerCss}>{children}</div>
+        </div>
         <div css={[cardCss]} />
-        <div css={[cardCss, backfaceCss]}>{children}</div>
       </div>
     </div>
   );
@@ -36,14 +38,13 @@ const cardContainerCss = css`
 
 const innerCss = (duration: number) => css`
   position: relative;
-
   width: 100%;
   height: 100%;
 
   transition: transform ${duration}s;
-
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
 `;
 
 const cardCss = css`
@@ -53,6 +54,9 @@ const cardCss = css`
 
   width: 100%;
   height: 100%;
+
+  background-color: #fff;
+  border-radius: 12px;
 
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -65,7 +69,12 @@ const flipCss = css`
 
 const backfaceCss = css`
   transform: rotateY(180deg);
-  background-color: white;
-
   z-index: 1;
+`;
+
+const backfaceInnerCss = css`
+  width: 100%;
+  height: 100%;
+
+  transform: rotateY(180deg);
 `;
