@@ -41,6 +41,15 @@ const baseButtonCss = css`
   border-radius: 8px;
   padding: 16px 0;
   font-size: 14px;
+  transition: 0.4s all;
+
+  &:disabled {
+    background-color: #ccc;
+    color: #666;
+    background: #d3d6da;
+    color: #6b7ca1;
+    cursor: not-allowed;
+  }
 `;
 
 const primaryCss = css`

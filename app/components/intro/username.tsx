@@ -4,13 +4,13 @@ import { useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
 import { Button } from "../button";
 import { usePhaseActions } from "~/utils/usePhaseActions";
+import { useEffect, useRef } from "react";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
 };
 
 export default function UserName() {
-  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const { increasePhase, decreasePhase, changeName, name } = usePhaseActions();
 
