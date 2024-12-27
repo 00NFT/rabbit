@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export const useTimer = (duration: number) => {
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(-1);
   const [isRunning, setIsRunning] = useState(false);
 
   const start = () => setIsRunning(true);
