@@ -1,4 +1,6 @@
 import { css } from "@emotion/react";
+import { LoaderFunctionArgs } from "@remix-run/node";
+import { json, redirect, useLoaderData } from "@remix-run/react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
@@ -15,6 +17,14 @@ const FLIP_DELAY = 100; // ms
 const FLIP_DURATION = 500; // ms
 const PROGRESS_DURATION = FLIP_DELAY + FLIP_DURATION + 3000; // Flip delay time + Flip duration time + 3s
 
+export const loader = async ({ params }: LoaderFunctionArgs) => {
+  const step = Number(params.step);
+  if (isNaN(step) || step > 4 || step < 1) {
+    return redirect("/");
+  }
+  return json(step);
+};
+
 export default function Game() {
   const [select, setSelect] = useState<number | null>(null); // user select
   const [status, setStatus] = useState<StatusType>("PENDING");
@@ -23,7 +33,8 @@ export default function Game() {
   const headingRef = useRef<NodeJS.Timeout>();
 
   const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION);
-  const { generateGame, checkAnswer, timeover, cards, step, nextStep, target } = useGame();
+  const { generateGame, checkAnswer, timeover, cards, nextStep, target } = useGame();
+  const step: number = useLoaderData();
 
   useEffect(() => {
     generateGame();

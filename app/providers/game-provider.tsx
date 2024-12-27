@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "@remix-run/react";
-import { createContext, useEffect, useRef, useState } from "react";
+import { createContext, useRef, useState } from "react";
 
 export interface CardType {
   id: number;
@@ -56,12 +56,8 @@ export const GameProvider = ({ children }: Props) => {
 
   const step = Number(params.step);
 
-  useEffect(() => {
-    if (step > 4 || step < 1) navigate("/");
-  }, [step]);
-
   const generateGame = () => {
-    if (step - 1 !== Object.keys(userAnswer).length) navigate("/");
+    if (step - 1 !== Object.keys(userAnswer).length) return navigate("/");
 
     const indexes = (step + 1) * (step + 1); // Lv1 - 2*2, Lv2 - 3*3, ...
     const obj = restStep.current[Math.floor(Math.random() * restStep.current.length)]; // target object
