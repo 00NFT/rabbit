@@ -47,4 +47,6 @@ const containerCss = css`
   display: flex;
   gap: 10px;
   justify-content: center;
+
+  z-index: 10;
 `;
