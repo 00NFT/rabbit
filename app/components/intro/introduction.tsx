@@ -6,6 +6,7 @@ import TypewriterComponent from "typewriter-effect";
 import { ANIMATION } from "~/utils/animation";
 import Marquee from "react-fast-marquee";
 import { usePhaseActions } from "~/utils/usePhaseActions";
+import { useEffect, useState } from "react";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
@@ -13,7 +14,18 @@ export const meta: MetaFunction = () => {
 
 export default function Introduction() {
   const { increasePhase, decreasePhase, name } = usePhaseActions();
+  const [isVisible, setIsVisible] = useState(false);
   const assets = ["carrot", "ears", "moon", "bucket"];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 6000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <>
@@ -27,6 +39,7 @@ export default function Introduction() {
           {assets.map((item) => {
             return (
               <img
+                id="marqueeItems"
                 key={item}
                 src={`/images/marquee/${item}.svg`}
                 alt={`${item} 그림`}
@@ -51,7 +64,9 @@ export default function Introduction() {
         </div>
       </div>
       <div css={buttons.wrapperCss}>
-        <Button onClick={increasePhase}>틀린그림 찾기 하러 가기</Button>
+        <Button onClick={increasePhase} css={visibleEffectCss(isVisible)}>
+          틀린그림 찾기 하러 가기
+        </Button>
       </div>
     </>
   );
@@ -68,6 +83,10 @@ const containerCss = css`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
+  #marqueeItems {
+    animation: ${ANIMATION.FADE_IN} 1s ease-in-out;
+  }
 `;
 
 const decriptionCss = css`
@@ -86,14 +105,6 @@ const decriptionCss = css`
     font-weight: 400;
     line-height: 2;
   }
-
-  #mysteriout-rabbit {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -40%);
-    animation: ${ANIMATION.FADE_IN} 0.8s ease-in-out;
-  }
 `;
 
 const navigationCss = css`
@@ -108,6 +119,11 @@ const navigationCss = css`
 
   margin: 0 auto;
   padding: 20px;
+`;
+
+const visibleEffectCss = (isVisible: boolean) => css`
+  display: ${isVisible ? "block" : "none"};
+  animation: ${ANIMATION.FADE_IN} 1s ease-in-out;
 `;
 
 /* 공통 컴포넌트 필요 */

@@ -6,7 +6,7 @@ import { Button } from "../button";
 import TypewriterComponent from "typewriter-effect";
 import { ANIMATION } from "~/utils/animation";
 import { usePhaseActions } from "~/utils/usePhaseActions";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
@@ -15,6 +15,17 @@ export const meta: MetaFunction = () => {
 export default function Help() {
   const navigate = useNavigate();
   const { increasePhase } = usePhaseActions();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 6000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <Fragment>
@@ -24,7 +35,7 @@ export default function Help() {
             <ArrowLeft />
           </button>
         </nav>
-        <img id="mysteriout-rabbit" src="/images/rabbit-mysterious.svg" alt="Mysterious Rabbit" />
+        <img id="mysterioutRabbit" src="/images/rabbit-mysterious.svg" alt="Mysterious Rabbit" />
         <div css={decriptionCss}>
           <TypewriterComponent
             options={{
@@ -39,7 +50,9 @@ export default function Help() {
         </div>
       </div>
       <div css={buttons.wrapperCss}>
-        <Button onClick={increasePhase}>도와준다</Button>
+        <Button onClick={increasePhase} css={visibleEffectCss(isVisible)}>
+          도와준다
+        </Button>
       </div>
     </Fragment>
   );
@@ -56,6 +69,15 @@ const containerCss = css`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
+  #mysterioutRabbit {
+    animation: ${ANIMATION.FADE_IN} 1s ease-in-out;
+  }
+`;
+
+const visibleEffectCss = (isVisible: boolean) => css`
+  display: ${isVisible ? "block" : "none"};
+  animation: ${ANIMATION.FADE_IN} 1s ease-in-out;
 `;
 
 const decriptionCss = css`
@@ -72,14 +94,6 @@ const decriptionCss = css`
     font-size: 12px;
     font-weight: 400;
     line-height: 2;
-  }
-
-  #mysteriout-rabbit {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -40%);
-    animation: ${ANIMATION.FADE_IN} 0.8s ease-in-out;
   }
 `;
 

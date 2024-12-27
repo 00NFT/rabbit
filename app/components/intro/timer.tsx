@@ -3,6 +3,8 @@ import type { MetaFunction } from "@remix-run/node";
 import { ArrowLeft } from "public/icons/Arrow";
 import { Button } from "../button";
 import { usePhaseActions } from "~/utils/usePhaseActions";
+import { useEffect, useState } from "react";
+import { ANIMATION } from "~/utils/animation";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
@@ -10,6 +12,17 @@ export const meta: MetaFunction = () => {
 
 export default function Timer() {
   const { increasePhase, decreasePhase } = usePhaseActions();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVisibleBtn(true);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <>
@@ -28,7 +41,9 @@ export default function Timer() {
         </div>
       </div>
       <div css={buttons.wrapperCss}>
-        <Button onClick={increasePhase}>도와준다</Button>
+        <Button onClick={increasePhase} css={buttonCss(isVisible)}>
+          도와준다
+        </Button>
       </div>
     </>
   );
@@ -45,6 +60,7 @@ const containerCss = css`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
   #mysteriout-rabbit {
     width: 50%;
     position: absolute;
@@ -54,17 +70,9 @@ const containerCss = css`
   }
 `;
 
-const textWrapperCss = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  > h1 {
-    font-weight: 400;
-    font-size: 28px;
-  }
+const buttonCss = (isVisible: boolean) => css`
+  display: ${isVisible ? "block" : "none"};
+  animation: ${ANIMATION.FADE_IN} 1s ease-in-out;
 `;
 
 const decriptionCss = css`

@@ -78,37 +78,6 @@ const containerCss = css`
   }
 `;
 
-const textWrapperCss = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-
-  > h1 {
-    font-weight: 400;
-    font-size: 28px;
-  }
-`;
-
-const decriptionCss = css`
-  display: flex;
-  width: 100%;
-  padding: 16px 20px;
-  align-items: flex-start;
-  gap: 10px;
-  border-radius: 12px;
-  background: #c9d5f0;
-  margin-top: auto;
-  margin-bottom: 115px;
-
-  > span {
-    color: #6b7ca1;
-    font-size: 12px;
-    font-weight: 400;
-  }
-`;
-
 const navigationCss = css`
   position: absolute;
   z-index: 1;
