@@ -127,7 +127,7 @@ export default function Game() {
                           : "border: 1px solid white;",
                   ]}
                 >
-                  <img src={card.image} width={100} height={100} />
+                  <img src={card.image} />
                 </div>
               </FlipCard>
             ))}
@@ -186,12 +186,13 @@ const imageGridCss = (gridCnt: number) => css`
 `;
 
 const cardCss = css`
-  width: 100%;
-  height: 100%;
-
   display: flex;
   justify-content: center;
   align-items: center;
+
+  width: 100%;
+  height: 100%;
+
   background-color: white;
   border-radius: 12px;
 
