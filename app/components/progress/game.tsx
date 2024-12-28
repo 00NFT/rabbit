@@ -1,13 +1,14 @@
 import { css } from "@emotion/react";
+import { ArrowLeft } from "public/icons/Arrow";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
-import { Header } from "~/components/header";
 import ProgressBar from "~/components/progress-bar";
 import { useGame } from "~/hooks/useGame";
 import { useTimer } from "~/hooks/useTimer";
 import { CardType } from "~/providers/game-provider";
+import { usePhaseActions } from "~/utils/usePhaseActions";
 
 type StatusType = "PENDING" | "SELECTED" | "SUCCESS" | "FAILURE" | "REVEALED" | "READY";
 
@@ -22,6 +23,7 @@ export default function Game() {
 
   const headingRef = useRef<NodeJS.Timeout>();
 
+  const { decreasePhase } = usePhaseActions();
   const { generateGame, checkAnswer, timeover, cards, step, nextStep, target } = useGame();
   const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION + (step - 1) * 1200);
 
@@ -37,9 +39,7 @@ export default function Game() {
 
   useEffect(() => {
     return () => {
-      if (headingRef.current) {
-        clearTimeout(headingRef.current);
-      }
+      if (headingRef.current) clearTimeout(headingRef.current);
     };
   }, []);
 
@@ -104,7 +104,11 @@ export default function Game() {
   return (
     <>
       <div css={containerCss}>
-        <Header />
+        <nav css={navigationCss}>
+          <button onClick={decreasePhase}>
+            <ArrowLeft />
+          </button>
+        </nav>
         <h1>{heading}</h1>
         <div css={paddingWrapperCss}>
           <ProgressBar progress={progress} />
@@ -146,20 +150,30 @@ export default function Game() {
 const containerCss = css`
   height: 100%;
 
+  padding-top: 64px;
+
   background-color: #f9f9f9;
   text-align: center;
 
-  > nav {
-    background-color: #f9f9f9 !important;
-  }
-
   > h1 {
-    margin-top: 4px;
-
     font-weight: 400;
     font-size: 20px;
     line-height: 34px;
   }
+`;
+
+const navigationCss = css`
+  position: absolute;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+
+  max-width: 600px;
+  width: 100%;
+
+  margin: 0 auto;
+  padding: 20px;
 `;
 
 const paddingWrapperCss = css`

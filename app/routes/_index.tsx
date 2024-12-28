@@ -1,10 +1,7 @@
 import { css } from "@emotion/react";
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import { ArrowLeft } from "public/icons/Arrow";
-import { Button } from "~/components/button";
 import FloatingMessages from "~/components/common/floating-messages";
-import { FloatingBottomArea } from "~/components/floating-bottom-area";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];

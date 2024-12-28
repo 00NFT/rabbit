@@ -14,7 +14,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Introduction() {
-  const { decreasePhase, movePhase, name } = usePhaseActions();
+  const { increasePhase, decreasePhase, name } = usePhaseActions();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const assets = ["carrot", "ears", "moon", "bucket"];
@@ -66,13 +66,7 @@ export default function Introduction() {
         </div>
       </div>
       <div css={buttons.wrapperCss}>
-        <Button
-          onClick={() => {
-            movePhase(0);
-            navigate("/progress");
-          }}
-          css={visibleEffectCss(isVisible)}
-        >
+        <Button onClick={() => increasePhase()} css={visibleEffectCss(isVisible)}>
           틀린그림 찾기 하러 가기
         </Button>
       </div>
