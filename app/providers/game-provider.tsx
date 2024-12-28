@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import { createContext, useRef, useState } from "react";
 
 export interface CardType {
@@ -7,7 +7,7 @@ export interface CardType {
   isAnswer: boolean;
 }
 
-export interface TargetType {
+export interface StepType {
   label: string;
   value: string;
 }
@@ -19,7 +19,7 @@ interface ContextProps {
   cards: CardType[];
   step: number;
   nextStep: () => void;
-  target: TargetType;
+  target: StepType;
 }
 
 interface Props {
@@ -36,7 +36,7 @@ export const GameContext = createContext<ContextProps | undefined>({
   target: { label: "", value: "" },
 });
 
-const INITIAL_STEP: TargetType[] = [
+const INITIAL_STEPS: StepType[] = [
   { label: "당근을", value: "carrot" },
   { label: "귀를", value: "ear" },
   { label: "달을", value: "moon" },
@@ -44,21 +44,17 @@ const INITIAL_STEP: TargetType[] = [
 ];
 
 export const GameProvider = ({ children }: Props) => {
+  const [step, setStep] = useState(1);
   const [userAnswer, setUserAnswer] = useState({});
 
   const [cards, setCards] = useState<CardType[]>([]);
   const [target, setTarget] = useState({ label: "", value: "" }); // e.g. {label: "귀", value: "ear"}
 
-  const restStep = useRef(INITIAL_STEP);
+  const restStep = useRef(INITIAL_STEPS);
 
-  const params = useParams();
   const navigate = useNavigate();
 
-  const step = Number(params.step);
-
   const generateGame = () => {
-    if (step - 1 !== Object.keys(userAnswer).length) return navigate("/");
-
     const indexes = (step + 1) * (step + 1); // Lv1 - 2*2, Lv2 - 3*3, ...
     const obj = restStep.current[Math.floor(Math.random() * restStep.current.length)]; // target object
     const answerPos = Math.floor(Math.random() * indexes); // wrong image position
@@ -84,7 +80,7 @@ export const GameProvider = ({ children }: Props) => {
   };
 
   const nextStep = () => {
-    if (restStep.current.length) navigate(`/progress/${step + 1}`);
+    if (restStep.current.length) setStep((prev) => prev + 1);
     else {
       // TODO: 결과에 따른 일러스트 인덱스를 naviagate state으로 전달
       navigate(`/result`);
