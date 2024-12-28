@@ -19,7 +19,7 @@ export default function Index() {
         <FloatingMessages />
       </div>
       <div css={buttons.wrapperCss}>
-        <Link to={"/intro"} css={buttons.cardButtonCss}>
+        <Link to={"/game"} css={buttons.cardButtonCss}>
           시작하기
         </Link>
         <span> TEAM N프터 </span>
