@@ -24,7 +24,7 @@ export default function Game() {
   const headingRef = useRef<NodeJS.Timeout>();
 
   const { decreasePhase } = usePhaseActions();
-  const { generateGame, checkAnswer, timeover, cards, step, nextStep, target } = useGame();
+  const { generateGame, checkAnswer, timeover, cards, step, resetStep, nextStep, target } = useGame();
   const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION + (step - 1) * 1200);
 
   useEffect(() => {
@@ -105,7 +105,12 @@ export default function Game() {
     <>
       <div css={containerCss}>
         <nav css={navigationCss}>
-          <button onClick={decreasePhase}>
+          <button
+            onClick={() => {
+              resetStep();
+              decreasePhase();
+            }}
+          >
             <ArrowLeft />
           </button>
         </nav>

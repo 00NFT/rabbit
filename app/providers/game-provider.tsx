@@ -18,6 +18,7 @@ interface ContextProps {
   timeover: () => void;
   cards: CardType[];
   step: number;
+  resetStep: () => void;
   nextStep: () => void;
   target: StepType;
 }
@@ -32,6 +33,7 @@ export const GameContext = createContext<ContextProps | undefined>({
   checkAnswer: ({}) => {},
   cards: [],
   step: 0,
+  resetStep: () => {},
   nextStep: () => {},
   target: { label: "", value: "" },
 });
@@ -79,6 +81,8 @@ export const GameProvider = ({ children }: Props) => {
     restStep.current = restStep.current.filter((item) => item.value !== target.value);
   };
 
+  const resetStep = () => setStep(1);
+
   const nextStep = () => {
     if (restStep.current.length) setStep((prev) => prev + 1);
     else {
@@ -87,5 +91,7 @@ export const GameProvider = ({ children }: Props) => {
     }
   };
 
-  return <GameContext.Provider value={{ generateGame, checkAnswer, timeover, cards, step, nextStep, target }}>{children}</GameContext.Provider>;
+  return (
+    <GameContext.Provider value={{ generateGame, checkAnswer, timeover, cards, step, resetStep, nextStep, target }}>{children}</GameContext.Provider>
+  );
 };
