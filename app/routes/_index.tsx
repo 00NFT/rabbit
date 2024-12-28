@@ -1,13 +1,21 @@
 import { css } from "@emotion/react";
 import type { MetaFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
+import { useEffect } from "react";
 import FloatingMessages from "~/components/common/floating-messages";
+import { usePhaseActions } from "~/utils/usePhaseActions";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
 };
 
 export default function Index() {
+  const { phase, movePhase } = usePhaseActions();
+
+  useEffect(() => {
+    if (phase !== 0) movePhase(0);
+  }, []);
+
   return (
     <>
       <div css={containerCss}>
