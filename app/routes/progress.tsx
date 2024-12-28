@@ -13,7 +13,7 @@ type StatusType = "PENDING" | "SELECTED" | "SUCCESS" | "FAILURE" | "REVEALED" | 
 
 const FLIP_DELAY = 100; // ms
 const FLIP_DURATION = 500; // ms
-const PROGRESS_DURATION = FLIP_DELAY + FLIP_DURATION + 3000; // Flip delay time + Flip duration time + 3s
+const PROGRESS_DURATION = FLIP_DELAY + FLIP_DURATION + 3000; // Flip delay time + Flip duration time + 3s (base)
 
 export default function Game() {
   const [select, setSelect] = useState<number | null>(null); // user select
@@ -22,8 +22,8 @@ export default function Game() {
 
   const headingRef = useRef<NodeJS.Timeout>();
 
-  const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION);
   const { generateGame, checkAnswer, timeover, cards, step, nextStep, target } = useGame();
+  const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION + (step - 1) * 1200);
 
   useEffect(() => {
     generateGame();
@@ -69,7 +69,7 @@ export default function Game() {
   const handleClick = async (card: CardType) => {
     const isLast = step === 4;
 
-    if (!select) {
+    if (!select && status === "PENDING") {
       stop();
       setSelect(card.id);
       checkAnswer(card);
@@ -79,14 +79,14 @@ export default function Game() {
       } else {
         setStatus("FAILURE");
         await handleDelayHeadingChange("땡!", 0);
-        await handleDelayHeadingChange("여기에 있었어", 800, () => {
+        await handleDelayHeadingChange("으이구...여기에 있었어", 800, () => {
           setStatus("REVEALED");
         });
       }
 
       if (isLast) {
-        await handleDelayHeadingChange("모든 아이템을 다 찾아봤어!");
-        await handleDelayHeadingChange("이제 달토끼를 보러 가자!").then(() => {
+        await handleDelayHeadingChange("아이템 찾기를 다 했어!");
+        await handleDelayHeadingChange("이제 나를 보러 와줘").then(() => {
           return new Promise((resolve) => {
             setTimeout(() => {
               nextStep();
@@ -95,7 +95,7 @@ export default function Game() {
           });
         });
       } else
-        await handleDelayHeadingChange("다음 아이템을 찾으러 가볼까?", 2000, () => {
+        await handleDelayHeadingChange("다음 아이템을 찾으러 갈래?", 2000, () => {
           setStatus("READY");
         });
     }
