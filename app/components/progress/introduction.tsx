@@ -1,20 +1,20 @@
 import { css } from "@emotion/react";
 import type { MetaFunction } from "@remix-run/node";
+import { useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
-import { Button } from "../button";
+import { useEffect, useState } from "react";
+import Marquee from "react-fast-marquee";
 import TypewriterComponent from "typewriter-effect";
 import { ANIMATION } from "~/utils/animation";
-import Marquee from "react-fast-marquee";
 import { usePhaseActions } from "~/utils/usePhaseActions";
-import { useEffect, useState } from "react";
-import { useNavigate } from "@remix-run/react";
+import { Button } from "../button";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
 };
 
 export default function Introduction() {
-  const { decreasePhase, movePhase, name } = usePhaseActions();
+  const { increasePhase, decreasePhase, name } = usePhaseActions();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const assets = ["carrot", "ears", "moon", "bucket"];
@@ -66,13 +66,7 @@ export default function Introduction() {
         </div>
       </div>
       <div css={buttons.wrapperCss}>
-        <Button
-          onClick={() => {
-            movePhase(0);
-            navigate("/progress/1");
-          }}
-          css={visibleEffectCss(isVisible)}
-        >
+        <Button onClick={() => increasePhase()} css={visibleEffectCss(isVisible)}>
           틀린그림 찾기 하러 가기
         </Button>
       </div>

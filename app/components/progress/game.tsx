@@ -1,29 +1,20 @@
 import { css } from "@emotion/react";
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { json, redirect, useLoaderData } from "@remix-run/react";
+import { ArrowLeft } from "public/icons/Arrow";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
-import { Header } from "~/components/header";
 import ProgressBar from "~/components/progress-bar";
 import { useGame } from "~/hooks/useGame";
 import { useTimer } from "~/hooks/useTimer";
 import { CardType } from "~/providers/game-provider";
+import { usePhaseActions } from "~/utils/usePhaseActions";
 
 type StatusType = "PENDING" | "SELECTED" | "SUCCESS" | "FAILURE" | "REVEALED" | "READY";
 
 const FLIP_DELAY = 100; // ms
 const FLIP_DURATION = 500; // ms
-const PROGRESS_DURATION = FLIP_DELAY + FLIP_DURATION + 3000; // Flip delay time + Flip duration time + 3s
-
-export const loader = async ({ params }: LoaderFunctionArgs) => {
-  const step = Number(params.step);
-  if (isNaN(step) || step > 4 || step < 1) {
-    return redirect("/");
-  }
-  return json(step);
-};
+const PROGRESS_DURATION = FLIP_DELAY + FLIP_DURATION + 3000; // Flip delay time + Flip duration time + 3s (base)
 
 export default function Game() {
   const [select, setSelect] = useState<number | null>(null); // user select
@@ -32,9 +23,9 @@ export default function Game() {
 
   const headingRef = useRef<NodeJS.Timeout>();
 
-  const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION);
-  const { generateGame, checkAnswer, timeover, cards, nextStep, target } = useGame();
-  const step: number = useLoaderData();
+  const { decreasePhase } = usePhaseActions();
+  const { generateGame, checkAnswer, timeover, cards, step, resetStep, nextStep, target } = useGame();
+  const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION + (step - 1) * 1200);
 
   useEffect(() => {
     generateGame();
@@ -48,9 +39,7 @@ export default function Game() {
 
   useEffect(() => {
     return () => {
-      if (headingRef.current) {
-        clearTimeout(headingRef.current);
-      }
+      if (headingRef.current) clearTimeout(headingRef.current);
     };
   }, []);
 
@@ -78,27 +67,26 @@ export default function Game() {
   };
 
   const handleClick = async (card: CardType) => {
-    checkAnswer(card);
-
     const isLast = step === 4;
 
-    if (!select) {
+    if (!select && status === "PENDING") {
       stop();
       setSelect(card.id);
+      checkAnswer(card);
       if (card.isAnswer) {
         setStatus("SUCCESS");
         await handleDelayHeadingChange("정답!", 0);
       } else {
         setStatus("FAILURE");
         await handleDelayHeadingChange("땡!", 0);
-        await handleDelayHeadingChange("여기에 있었어", 800, () => {
+        await handleDelayHeadingChange("으이구...여기에 있었어", 800, () => {
           setStatus("REVEALED");
         });
       }
 
       if (isLast) {
-        await handleDelayHeadingChange("모든 아이템을 다 찾아봤어!");
-        await handleDelayHeadingChange("이제 달토끼를 보러 가자!").then(() => {
+        await handleDelayHeadingChange("아이템 찾기를 다 했어!");
+        await handleDelayHeadingChange("이제 나를 보러 와줘").then(() => {
           return new Promise((resolve) => {
             setTimeout(() => {
               nextStep();
@@ -107,7 +95,7 @@ export default function Game() {
           });
         });
       } else
-        await handleDelayHeadingChange("다음 아이템을 찾으러 가볼까?", 2000, () => {
+        await handleDelayHeadingChange("다음 아이템을 찾으러 갈래?", 2000, () => {
           setStatus("READY");
         });
     }
@@ -116,7 +104,16 @@ export default function Game() {
   return (
     <>
       <div css={containerCss}>
-        <Header />
+        <nav css={navigationCss}>
+          <button
+            onClick={() => {
+              resetStep();
+              decreasePhase();
+            }}
+          >
+            <ArrowLeft />
+          </button>
+        </nav>
         <h1>{heading}</h1>
         <div css={paddingWrapperCss}>
           <ProgressBar progress={progress} />
@@ -158,20 +155,30 @@ export default function Game() {
 const containerCss = css`
   height: 100%;
 
+  padding-top: 64px;
+
   background-color: #f9f9f9;
   text-align: center;
 
-  > nav {
-    background-color: #f9f9f9 !important;
-  }
-
   > h1 {
-    margin-top: 4px;
-
     font-weight: 400;
     font-size: 20px;
     line-height: 34px;
   }
+`;
+
+const navigationCss = css`
+  position: absolute;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+
+  max-width: 600px;
+  width: 100%;
+
+  margin: 0 auto;
+  padding: 20px;
 `;
 
 const paddingWrapperCss = css`
