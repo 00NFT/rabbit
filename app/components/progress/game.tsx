@@ -143,7 +143,7 @@ export default function Game() {
           </div>
         </div>
         {status === "READY" && (
-          <FloatingBottomArea backgroundColor="#f9f9f9">
+          <FloatingBottomArea backgroundColor="#F0F4FC">
             <Button onClick={nextStep}>찾으러 가기</Button>
           </FloatingBottomArea>
         )}
@@ -157,7 +157,7 @@ const containerCss = css`
 
   padding-top: 64px;
 
-  background-color: #f9f9f9;
+  background-color: #f0f4fc;
   text-align: center;
 
   > h1 {
