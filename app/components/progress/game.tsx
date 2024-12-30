@@ -10,6 +10,7 @@ import { useTimer } from "~/hooks/useTimer";
 import { CardType } from "~/providers/game-provider";
 import { executeSequentially } from "~/utils/executeSequentially";
 import { usePhaseActions } from "~/utils/usePhaseActions";
+import Confetti from "../confetti";
 
 type StatusType = "PENDING" | "SUCCESS" | "FAILURE" | "REVEALED" | "READY" | "COMPLETED" | "SHOW_RESULT";
 
@@ -147,6 +148,7 @@ export default function Game() {
           </FloatingBottomArea>
         )}
       </div>
+      <Confetti condition={status === "SUCCESS"} />
     </>
   );
 }
