@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { ArrowLeft } from "public/icons/Arrow";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
@@ -8,9 +8,10 @@ import ProgressBar from "~/components/progress-bar";
 import { useGame } from "~/hooks/useGame";
 import { useTimer } from "~/hooks/useTimer";
 import { CardType } from "~/providers/game-provider";
+import { executeSequentially } from "~/utils/executeSequentially";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 
-type StatusType = "PENDING" | "SELECTED" | "SUCCESS" | "FAILURE" | "REVEALED" | "READY";
+type StatusType = "PENDING" | "SUCCESS" | "FAILURE" | "REVEALED" | "READY" | "COMPLETED" | "SHOW_RESULT";
 
 const FLIP_DELAY = 100; // ms
 const FLIP_DURATION = 500; // ms
@@ -19,9 +20,6 @@ const PROGRESS_DURATION = FLIP_DELAY + FLIP_DURATION + 3000; // Flip delay time 
 export default function Game() {
   const [select, setSelect] = useState<number | null>(null); // user select
   const [status, setStatus] = useState<StatusType>("PENDING");
-  const [heading, setHeading] = useState<string>("");
-
-  const headingRef = useRef<NodeJS.Timeout>();
 
   const { decreasePhase } = usePhaseActions();
   const { generateGame, checkAnswer, timeover, cards, step, resetStep, nextStep, target } = useGame();
@@ -38,16 +36,6 @@ export default function Game() {
   }, [step]);
 
   useEffect(() => {
-    return () => {
-      if (headingRef.current) clearTimeout(headingRef.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    setHeading(`다르게 생긴 ${target.label} 찾아줘`);
-  }, [target]);
-
-  useEffect(() => {
     // timeover
     if (progress === 100) {
       timeover();
@@ -55,49 +43,59 @@ export default function Game() {
     }
   }, [progress]);
 
-  const handleDelayHeadingChange = async (text: string, delay: number = 1000, callback?: (obj?: any) => any) => {
-    clearTimeout(headingRef.current);
-    return new Promise((resolve) => {
-      headingRef.current = setTimeout(() => {
-        setHeading(text);
-        callback?.();
-        resolve(true);
-      }, delay);
-    });
+  useEffect(() => {
+    if (status === "SUCCESS" || status === "FAILURE") {
+      handleTimeline();
+    }
+  }, [status]);
+
+  const getHeadingText = () => {
+    switch (status) {
+      case "PENDING":
+        return `다르게 생긴 ${target.label} 찾아줘`;
+      case "SUCCESS":
+        return `정답!`;
+      case "FAILURE":
+        return "땡!";
+      case "REVEALED":
+        return "으이구... 여기에 있었어";
+      case "READY":
+        return "다음 아이템을 찾으러 갈래?";
+      case "COMPLETED":
+        return "아이템 찾기를 다 했어!";
+      case "SHOW_RESULT":
+        return "이제 나를 보러 와줘";
+    }
   };
 
-  const handleClick = async (card: CardType) => {
+  const handleTimeline = () => {
     const isLast = step === 4;
+    let initialDelay = 1200;
+    let actions: { action: () => void; delay?: number }[] = [];
 
+    if (status === "FAILURE") {
+      actions = [{ action: () => setStatus("REVEALED"), delay: 1400 }];
+    }
+
+    if (isLast)
+      actions = actions.concat([
+        { action: () => setStatus("COMPLETED"), delay: 1400 },
+        { action: () => setStatus("SHOW_RESULT"), delay: 1400 },
+        { action: () => nextStep() },
+      ]);
+    else {
+      actions = actions.concat([{ action: () => setStatus("READY") }]);
+    }
+    executeSequentially(actions, initialDelay);
+  };
+
+  const handleClick = (card: any) => {
     if (!select && status === "PENDING") {
       stop();
       setSelect(card.id);
       checkAnswer(card);
-      if (card.isAnswer) {
-        setStatus("SUCCESS");
-        await handleDelayHeadingChange("정답!", 0);
-      } else {
-        setStatus("FAILURE");
-        await handleDelayHeadingChange("땡!", 0);
-        await handleDelayHeadingChange("으이구...여기에 있었어", 800, () => {
-          setStatus("REVEALED");
-        });
-      }
 
-      if (isLast) {
-        await handleDelayHeadingChange("아이템 찾기를 다 했어!");
-        await handleDelayHeadingChange("이제 나를 보러 와줘").then(() => {
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              nextStep();
-              resolve(true);
-            }, 1000);
-          });
-        });
-      } else
-        await handleDelayHeadingChange("다음 아이템을 찾으러 갈래?", 2000, () => {
-          setStatus("READY");
-        });
+      setStatus(card.isAnswer ? "SUCCESS" : "FAILURE");
     }
   };
 
@@ -114,7 +112,8 @@ export default function Game() {
             <ArrowLeft />
           </button>
         </nav>
-        <h1>{heading}</h1>
+
+        <h1>{getHeadingText()}</h1>
         <div css={paddingWrapperCss}>
           <ProgressBar progress={progress} />
           <div css={imageGridCss(step + 1)}>
@@ -123,7 +122,7 @@ export default function Game() {
                 <div
                   css={[
                     cardCss,
-                    status === "REVEALED" || status === "READY"
+                    status === "REVEALED" || status === "READY" || status === "COMPLETED" || status === "SHOW_RESULT"
                       ? card.isAnswer
                         ? "border: 1.5px solid black;"
                         : "border: 1px solid white; opacity: 0.6;"
