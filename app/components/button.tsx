@@ -59,5 +59,5 @@ const primaryCss = css`
 
 const secondaryCss = css`
   color: #151528;
-  background-color: #c1c1c1;
+  background-color: #ffffff;
 `;
