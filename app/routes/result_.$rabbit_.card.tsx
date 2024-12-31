@@ -52,6 +52,25 @@ export default function Page() {
     }
   };
 
+  const handleClickShare = () => {
+    const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${rabbit}`;
+    if (navigator?.canShare()) {
+      navigator.share({
+        title: "새해맞이 달토끼 구출 대작전",
+        text: `${nickname} 용사의 덕담카드`,
+        url: shareUrl,
+      });
+      return;
+    }
+
+    try {
+      navigator.clipboard.writeText(shareUrl);
+      alert("링크가 복사되었어요!");
+    } catch {
+      alert("문제가 발생했어요!");
+    }
+  };
+
   return (
     <>
       <Header backgroundColor="#f0f4fc" />
@@ -92,7 +111,7 @@ export default function Page() {
           <Button buttonType="secondary" onClick={handleClickDownload}>
             카드 다운로드
           </Button>
-          <Button>결과 공유하기</Button>
+          <Button onClick={handleClickShare}>결과 공유하기</Button>
         </div>
       </FloatingBottomArea>
     </>

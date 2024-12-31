@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Link, useParams } from "@remix-run/react";
+import { useParams } from "@remix-run/react";
 import { Button } from "~/components/button";
 import { GAME_RESULT } from "~/constants/result";
 
@@ -22,12 +22,9 @@ export default function Page() {
       </div>
 
       <div css={buttons.wrapperCss}>
-        <Button as="link" to={`/result/${rabbit}/card`}>
-          새해 덕담카드 만들기
+        <Button as="link" to={`/`}>
+          나도 토끼 구하러 가기
         </Button>
-        <Link to={"/"} css={buttons.homeButtonCss}>
-          처음으로 돌아가기
-        </Link>
       </div>
     </>
   );
