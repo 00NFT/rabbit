@@ -30,10 +30,8 @@ const onError = (status: number, message: string) => {
 
 /** request 요청 시, config 객체를 받아와 처리하는 함수 */
 const onRequest = (config: AxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
-  const token = localStorage.getItem("AT");
   const { method, url, headers = {} } = config;
 
-  headers.Authorization = token ? `Bearer ${token}` : "";
   logOnDev(`[API REQUEST] ${method?.toUpperCase()} ${url}`);
   return Promise.resolve({ ...config, headers } as InternalAxiosRequestConfig);
 };
