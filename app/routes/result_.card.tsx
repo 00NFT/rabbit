@@ -35,7 +35,7 @@ export default function Page() {
         <div css={cardCss}>
           <img src="/images/rabbit_beta.png" alt="rabbit beta" css={imageCss} />
           <div css={textAreaWrapperCss}>
-            <textarea value={text} onChange={handleChangeTextarea} rows={2} placeholder="덕담 메세지를 입력해줘" />
+            <textarea value={text} onChange={handleChangeTextarea} rows={2} placeholder="덕담 메시지를 입력해줘" />
             <div css={underlineCss}>
               <div />
               <div />

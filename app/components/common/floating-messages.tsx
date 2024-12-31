@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { css } from "@emotion/react";
 
-const messages = ["헤온용사 토끼 구조작전 실행 중!", "현토리 용사 토끼 구하는 중...", "지렁이 용사가 지금 토끼를 구하고 있어!"];
+type Props = {
+  messages: string[];
+};
 
-export default function FloatingMessages() {
+const mockMessage = ["헤온 용사 토끼 구조작전 실행 중!", "현토리 용사 토끼 구하는 중...", "지렁이 용사가 지금 토끼를 구하고 있어!"];
+
+export default function FloatingMessages({ messages }: Props) {
   const [currentMessageIndex, setCurrentMessageIndex] = useState<number>(0);
 
   useEffect(() => {
@@ -45,7 +49,7 @@ export default function FloatingMessages() {
           }}
           css={floatingMessagesCss.message}
         >
-          {messages[currentMessageIndex]}
+          {messages && messages.length ? messages[currentMessageIndex] : mockMessage[currentMessageIndex]}
         </motion.div>
       </AnimatePresence>
     </div>

@@ -1,19 +1,38 @@
 import { css } from "@emotion/react";
-import type { MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+import type { LoaderFunction } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
 import { useEffect } from "react";
 import FloatingMessages from "~/components/common/floating-messages";
+import { getPlayerName } from "~/hooks/apis/useGetPlayerNames";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 
-export const meta: MetaFunction = () => {
-  return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
+type dataType = {
+  ID: number;
+  USERNAME: string;
+  CARD_MESSAGE: string;
+  REG_DATE: string;
+};
+
+export const loader: LoaderFunction = async () => {
+  const loaderData = await getPlayerName();
+  return loaderData;
 };
 
 export default function Index() {
-  const { phase, movePhase } = usePhaseActions();
+  const { name, phase, movePhase, changeName } = usePhaseActions();
+  const loaderData = useLoaderData<typeof loader>();
+  const messageRule = ["용사 토끼 구조작전 실행 중!", "용사 토끼 구하는 중...", "용사가 지금 토끼를 구하고 있어!"];
+  const scaledLoaderData = loaderData?.data.reduce((acc: string[], cur: dataType, idx: number) => {
+    if (cur.USERNAME) {
+      const messageIdx = idx % messageRule.length;
+      acc.push(`${cur.USERNAME} ${messageRule[messageIdx]}`);
+    }
+    return acc;
+  }, []);
 
   useEffect(() => {
     if (phase !== 0) movePhase(0);
+    if (name !== "") changeName("");
   }, []);
 
   return (
@@ -24,7 +43,7 @@ export default function Index() {
             새해맞이 <br /> 달토끼 구출 대작전
           </h1>
         </div>
-        <FloatingMessages />
+        <FloatingMessages messages={scaledLoaderData} />
       </div>
       <div css={buttons.wrapperCss}>
         <Link to={"/game"} css={buttons.cardButtonCss}>

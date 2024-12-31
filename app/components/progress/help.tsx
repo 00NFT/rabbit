@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import type { MetaFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
 import { Button } from "../button";
@@ -12,18 +12,31 @@ export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
 };
 
+export const links: LinksFunction = () => {
+  return [{ rel: "preload", href: "/images/rabbit-mysterious.svg", as: "image" }];
+};
+
 export default function Help() {
   const navigate = useNavigate();
   const { increasePhase } = usePhaseActions();
   const [isVisible, setIsVisible] = useState(false);
+  const [storySpeed, setStorySpeed] = useState(30);
 
   useEffect(() => {
+    const skipStory = () => {
+      setIsVisible(true);
+      setStorySpeed(0);
+    };
+
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 6000);
+    }, 3000);
+
+    document.body.addEventListener("click", skipStory);
 
     return () => {
       clearTimeout(timer);
+      document.body.removeEventListener("click", skipStory);
     };
   }, []);
 
@@ -44,7 +57,7 @@ export default function Help() {
                 명절 떡을 만들수가 없다고 날 좀 도와주지 않겠어?`,
               autoStart: true,
               loop: false,
-              delay: 50,
+              delay: storySpeed,
             }}
           />
         </div>

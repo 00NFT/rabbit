@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import type { MetaFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
 import { useEffect, useState } from "react";
@@ -9,6 +9,16 @@ import { ANIMATION } from "~/utils/animation";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 import { Button } from "../button";
 
+const assets = ["carrot", "ears", "moon", "bucket"];
+
+export const links: LinksFunction = () => {
+  return assets.map((asset) => ({
+    rel: "preload",
+    href: `/images/marquee/${asset}.svg`,
+    as: "image",
+  }));
+};
+
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
 };
@@ -17,15 +27,23 @@ export default function Introduction() {
   const { increasePhase, decreasePhase, name } = usePhaseActions();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
-  const assets = ["carrot", "ears", "moon", "bucket"];
+  const [storySpeed, setStorySpeed] = useState(30);
 
   useEffect(() => {
+    const skipStory = () => {
+      setIsVisible(true);
+      setStorySpeed(0);
+    };
+
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 6000);
+    }, 4000);
+
+    document.body.addEventListener("click", skipStory);
 
     return () => {
       clearTimeout(timer);
+      document.body.removeEventListener("click", skipStory);
     };
   }, []);
 
@@ -37,7 +55,11 @@ export default function Introduction() {
             <ArrowLeft />
           </button>
         </nav>
-        <Marquee>
+        <Marquee
+          css={css`
+            width: var(--layout-max-width) !important;
+          `}
+        >
           {assets.map((item) => {
             return (
               <img
@@ -55,12 +77,13 @@ export default function Introduction() {
         <div css={decriptionCss}>
           <TypewriterComponent
             options={{
-              strings: `거기 ${name} 용사!
-                <br/> 옆동네 토끼가 내 아이템을 훔쳐가서 내 모습을 잃어버렸어!
-                명절 떡을 만들수가 없다고 날 좀 도와주지 않겠어?`,
+              strings: `${name} 용사!
+                <br/> 앞으로 나올 게임에서 다른그림을 찾아줘!
+                <br/> 저기 위에 있는게 진짜라고 알겠지?
+                <br/> 나의 귀, 달, 당근, 절구를 부탁할게`,
               autoStart: true,
               loop: false,
-              delay: 50,
+              delay: storySpeed,
             }}
           />
         </div>

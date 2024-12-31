@@ -52,7 +52,7 @@ export default function UserName() {
 
 const containerCss = css`
   position: relative;
-  padding: 84px 24px 0 0px;
+  padding: 84px 24px 0 24px;
   height: 100vh;
 
   background-color: #f0f4fc;

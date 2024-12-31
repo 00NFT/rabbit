@@ -1,10 +1,13 @@
 import { css } from "@emotion/react";
 import { useNavigate } from "@remix-run/react";
+import { useAtomValue } from "jotai";
 import { useState } from "react";
 import { Button } from "~/components/button";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
 import { Header } from "~/components/header";
 import { Textarea } from "~/components/text-area";
+import { usePostFeedback } from "~/hooks/apis/usePostFeedback";
+import { nameAtom } from "~/utils/usePhaseActions";
 
 type FeedbackValues = {
   discomfort: string;
@@ -22,6 +25,8 @@ const initialFeedbackValues = {
 };
 export default function Page() {
   const navigate = useNavigate();
+  const username = useAtomValue(nameAtom);
+  const { mutate, isPending } = usePostFeedback();
   const [feedbackValues, setFeedbackValues] = useState<FeedbackValues>(initialFeedbackValues);
 
   const handleChangeFormValues = (type: keyof FeedbackValues, value: string) => {
@@ -33,7 +38,25 @@ export default function Page() {
 
   // NOTE: api 연동
   const handleSubmit = () => {
-    navigate("/result/feedback-complete");
+    mutate(
+      {
+        username,
+        answer1: feedbackValues.discomfort,
+        answer2: feedbackValues.enjoyableParts,
+        answer3: feedbackValues.difficulty,
+        answer4: feedbackValues.additionalComments,
+        answer5: feedbackValues.email ?? "",
+      },
+      {
+        onSuccess: () => {
+          navigate("/result/feedback-complete");
+        },
+        onError: (e) => {
+          alert("문제가 발생했어요!");
+          console.log(e);
+        },
+      },
+    );
   };
 
   return (
@@ -103,7 +126,9 @@ export default function Page() {
       </div>
 
       <FloatingBottomArea>
-        <Button onClick={handleSubmit}>제출하기</Button>
+        <Button onClick={handleSubmit} disabled={isPending}>
+          제출하기
+        </Button>
       </FloatingBottomArea>
     </>
   );
