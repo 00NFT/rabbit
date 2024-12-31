@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { loadFull } from "tsparticles";
 
 const image = Array.from({ length: 4 }).map((_, idx) => ({
@@ -8,10 +8,18 @@ const image = Array.from({ length: 4 }).map((_, idx) => ({
 }));
 
 export default function Confetti({ condition }: { condition: boolean }) {
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+
   useEffect(() => {
     initParticlesEngine(async (engine) => {
       await loadFull(engine);
     });
+
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const options = useMemo(
@@ -82,7 +90,7 @@ export default function Confetti({ condition }: { condition: boolean }) {
           outModes: {
             default: "none",
           },
-          speed: { min: 40, max: 55 },
+          speed: screenWidth > 600 ? { min: 70, max: 90 } : { min: 40, max: 55 },
         },
         shape: {
           type: ["image"],
