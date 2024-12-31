@@ -153,7 +153,7 @@ export default function Game() {
 }
 
 const containerCss = css`
-  height: 100%;
+  min-height: 100%;
 
   padding-top: 64px;
 
