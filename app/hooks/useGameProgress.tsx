@@ -1,5 +1,4 @@
 import { useNavigate } from "@remix-run/react";
-import { atom, useAtom } from "jotai";
 import { useRef, useState } from "react";
 
 export interface CardType {
@@ -24,14 +23,12 @@ const INITIAL_STEPS: StepType[] = [
   { label: "절구를", value: "mortar" },
 ];
 
-export const userAnswerAtom = atom({});
-
 export function useGameProgress() {
   const [step, setStep] = useState<number>(1);
   const [cards, setCards] = useState<CardType[]>([]);
   const [currentStep, setCurrentStep] = useState<StepType>({ label: "", value: "" }); // e.g. {label: "귀", value: "ear"}
 
-  const [userAnswer, setUserAnswer] = useAtom<UserAnswerType>(userAnswerAtom); // not used yet
+  const [userAnswer, setUserAnswer] = useState<UserAnswerType>({}); // not used yet
 
   const restStep = useRef(INITIAL_STEPS);
 
@@ -65,11 +62,10 @@ export function useGameProgress() {
   const resetStep = () => setStep(1);
 
   const nextStep = () => {
-    console.log(userAnswer);
     if (restStep.current.length) setStep((prev: number) => prev + 1);
     else {
-      // TODO: 결과에 따른 일러스트 인덱스를 path param 으로 전달
-      navigate(`/result`);
+      const userResult = ["carrot", "ear", "moon", "mortar"].reduce((prev, curr) => `${prev}${Number(userAnswer[curr])}`, "");
+      navigate(`/result/${userResult}`);
     }
   };
 

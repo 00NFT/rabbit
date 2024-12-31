@@ -5,9 +5,9 @@ import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
 import ProgressBar from "~/components/progress-bar";
+import { useGameProgress } from "~/hooks/useGameProgress";
 import { useTimer } from "~/hooks/useTimer";
 import { executeSequentially } from "~/utils/executeSequentially";
-import { useGameProgress } from "~/utils/useGameProgress";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 import Confetti from "../confetti";
 
@@ -117,7 +117,7 @@ export default function Game() {
         <div css={paddingWrapperCss}>
           <ProgressBar progress={progress} />
           <div css={imageGridCss(step + 1)}>
-            {cards.map((card: CardType, idx: number) => (
+            {cards.map((card, idx: number) => (
               <FlipCard key={`${cards.length}_${idx}`} onClick={() => handleClick(card)} delay={FLIP_DELAY} duration={FLIP_DURATION}>
                 <div
                   css={[
@@ -174,7 +174,7 @@ const navigationCss = css`
   display: flex;
   align-items: center;
 
-  max-width: 600px;
+  max-width: var(--layout-max-width);
   width: 100%;
 
   margin: 0 auto;

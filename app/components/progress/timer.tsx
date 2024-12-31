@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import { motion } from "framer-motion";
 import { ArrowLeft } from "public/icons/Arrow";
 import { useEffect, useState } from "react";
 import { usePhaseActions } from "~/utils/usePhaseActions";
@@ -28,16 +27,9 @@ export default function Timer() {
         </button>
       </nav>
 
-      <motion.div
-        key={count}
-        initial={{ scale: 2 }}
-        animate={{ scale: 1 }}
-        exit={{ scale: 0, opacity: 0 }}
-        transition={{ duration: 1, repeat: 3, ease: "easeInOut" }}
-        css={countdownCss}
-      >
+      <div css={countdownCss}>
         <p>{count > 0 ? count : null}</p>
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -60,7 +52,7 @@ const navigationCss = css`
   display: flex;
   align-items: center;
 
-  max-width: 600px;
+  max-width: var(--layout-max-width);
   width: 100%;
 
   margin: 0 auto;
@@ -74,6 +66,8 @@ const countdownCss = css`
 
   width: 70px;
   height: 70px;
+
+  padding: 50px;
 
   background-color: white;
   border-radius: 100%;

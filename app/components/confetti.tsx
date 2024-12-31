@@ -1,24 +1,25 @@
 import { css } from "@emotion/react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { loadFull } from "tsparticles";
 
 const image = Array.from({ length: 4 }).map((_, idx) => ({
   src: `/illusts/confetti${idx + 1}.svg`,
-  width: 30,
-  height: 30,
-  particles: {
-    size: {
-      value: 30,
-    },
-  },
 }));
 
 export default function Confetti({ condition }: { condition: boolean }) {
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+
   useEffect(() => {
     initParticlesEngine(async (engine) => {
       await loadFull(engine);
     });
+
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const options = useMemo(
@@ -28,7 +29,9 @@ export default function Confetti({ condition }: { condition: boolean }) {
       },
       emitters: [
         {
-          direction: "top-right",
+          // direction: "top-right",
+          direction: 280,
+
           position: {
             x: 0,
             y: 100,
@@ -37,12 +40,19 @@ export default function Confetti({ condition }: { condition: boolean }) {
             count: 1,
           },
           rate: {
-            quantity: 4,
+            quantity: 6,
             delay: 1000,
+          },
+
+          particles: {
+            move: {
+              angle: { min: -3, max: 3 },
+            },
           },
         },
         {
-          direction: "top-left",
+          // direction: "top-left",
+          direction: 260,
 
           position: {
             x: 100,
@@ -52,8 +62,14 @@ export default function Confetti({ condition }: { condition: boolean }) {
             count: 1,
           },
           rate: {
-            quantity: 4,
+            quantity: 6,
             delay: 1000,
+          },
+
+          particles: {
+            move: {
+              angle: { min: -3, max: 3 },
+            },
           },
         },
       ],
@@ -61,23 +77,20 @@ export default function Confetti({ condition }: { condition: boolean }) {
         enable: true,
         zIndex: -1,
       },
-      number: {
-        value: 0,
-      },
       particles: {
+        size: {
+          value: 40,
+        },
         move: {
-          decay: 0.01,
           enable: true,
           gravity: {
             enable: true,
-            acceleration: 80,
-            maxSpeed: 200,
+            acceleration: 120,
           },
           outModes: {
             default: "none",
           },
-
-          speed: { min: 30, max: 30 },
+          speed: screenWidth > 600 ? { min: 70, max: 90 } : { min: 40, max: 55 },
         },
         shape: {
           type: ["image"],
@@ -107,7 +120,7 @@ const containerCss = css`
   align-items: end;
   height: 100%;
   width: 100%;
-  max-width: 600px;
+  max-width: var(--layout-max-width);
 
   bottom: 0;
   left: 50%;
