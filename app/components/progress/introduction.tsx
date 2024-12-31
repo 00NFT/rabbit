@@ -139,7 +139,7 @@ const navigationCss = css`
   display: flex;
   align-items: center;
 
-  max-width: 400px;
+  max-width: var(--layout-max-width);
   width: 100%;
 
   margin: 0 auto;
@@ -158,7 +158,7 @@ const buttons = {
     bottom: 0;
 
     width: 100%;
-    max-width: 400px;
+    max-width: var(--layout-max-width);
     margin: 0 auto;
     padding: 12px 24px 32px;
 

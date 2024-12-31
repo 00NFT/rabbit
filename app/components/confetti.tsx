@@ -120,7 +120,7 @@ const containerCss = css`
   align-items: end;
   height: 100%;
   width: 100%;
-  max-width: 400px;
+  max-width: var(--layout-max-width);
 
   bottom: 0;
   left: 50%;

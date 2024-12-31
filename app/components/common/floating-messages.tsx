@@ -63,7 +63,7 @@ const floatingMessagesCss = {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 400px;
+    max-width: var(--layout-max-width);
     display: flex;
     flex-direction: column;
     align-items: center;
