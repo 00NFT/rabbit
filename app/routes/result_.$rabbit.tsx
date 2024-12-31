@@ -137,7 +137,7 @@ const buttons = {
     bottom: 0;
 
     width: 100%;
-    max-width: 600px;
+    max-width: var(--layout-max-width);
     margin: 0 auto;
     padding: 12px 24px 32px;
 
