@@ -2,17 +2,19 @@ import { css } from "@emotion/react";
 import { useParams } from "@remix-run/react";
 import { Button } from "~/components/button";
 import { GAME_RESULT } from "~/constants/result";
+import { decrypt } from "~/utils/crypto";
 
 export default function Page() {
-  const { rabbit = "0000" } = useParams();
-  const resultText = GAME_RESULT[rabbit];
+  const { rabbit } = useParams();
+  const decryptRabbit = decrypt(rabbit ?? "") ?? "";
+  const resultText = GAME_RESULT[decryptRabbit] ?? GAME_RESULT["0000"];
 
   return (
     <>
       <div
         css={containerCss}
         style={{
-          background: `#151528 url("/images/result/rabbit_${rabbit}.png") center/cover no-repeat`,
+          background: `#151528 url("/images/result/rabbit_${decryptRabbit}.png") center/cover no-repeat`,
         }}
       >
         <div css={textWrapperCss}>
