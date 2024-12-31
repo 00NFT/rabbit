@@ -7,6 +7,11 @@
   box-sizing: border-box;
 }
 
+:root {
+  --parent-bg-color: inherit;
+  --layout-max-width: 600px;
+}
+
 /* HTML & Body */
 html,
 body {
