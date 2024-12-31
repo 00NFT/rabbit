@@ -9,6 +9,7 @@ import { nameAtom } from "~/utils/usePhaseActions";
 import html2canvas from "html2canvas";
 import fileSaver from "file-saver";
 import { useParams } from "@remix-run/react";
+import { encrypt } from "~/utils/crypto";
 
 export default function Page() {
   const nickname = useAtomValue(nameAtom);
@@ -53,7 +54,8 @@ export default function Page() {
   };
 
   const handleClickShare = () => {
-    const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${rabbit}`;
+    const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${encrypt(rabbit)}`;
+
     if (navigator?.canShare()) {
       navigator.share({
         title: "새해맞이 달토끼 구출 대작전",
