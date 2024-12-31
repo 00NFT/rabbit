@@ -5,9 +5,9 @@ import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
 import ProgressBar from "~/components/progress-bar";
+import { useGameProgress } from "~/hooks/useGameProgress";
 import { useTimer } from "~/hooks/useTimer";
 import { executeSequentially } from "~/utils/executeSequentially";
-import { useGameProgress } from "~/utils/useGameProgress";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 import Confetti from "../confetti";
 
