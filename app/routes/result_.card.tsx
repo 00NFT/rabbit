@@ -1,10 +1,18 @@
 import { css } from "@emotion/react";
-import { useState } from "react";
+import { useAtomValue } from "jotai";
+import { useRef, useState } from "react";
 import { Button } from "~/components/button";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
 import { Header } from "~/components/header";
+import { nameAtom } from "~/utils/usePhaseActions";
+
+import html2canvas from "html2canvas";
+import fileSaver from "file-saver";
 
 export default function Page() {
+  const nickname = useAtomValue(nameAtom);
+
+  const cardRef = useRef<HTMLDivElement>(null);
   const [text, setText] = useState("");
 
   /**
@@ -21,19 +29,44 @@ export default function Page() {
     setText(newValue);
   };
 
+  const handleClickDownload = async () => {
+    if (!cardRef.current) return;
+    try {
+      const canvas = await html2canvas(cardRef.current, {
+        useCORS: true,
+        logging: true,
+        scale: 2,
+      });
+      const fileName = `${nickname}의 덕담카드.png`;
+
+      canvas.toBlob((blob) => {
+        if (blob !== null) {
+          fileSaver.saveAs(blob, fileName);
+        }
+      });
+    } catch (error) {
+      console.error("이미지 저장에 실패했어요!");
+    }
+  };
+
   return (
     <>
       <Header backgroundColor="#f0f4fc" />
 
       <div css={containerCss}>
         <h1>
-          지렁이 용사의 달토끼로
+          {nickname} 용사의 달토끼로
           <br />
           덕담카드 만들기
         </h1>
 
-        <div css={cardCss}>
-          <img src="/images/rabbit_beta.png" alt="rabbit beta" css={imageCss} />
+        <div css={cardCss} ref={cardRef}>
+          <div
+            css={imageCss}
+            style={{
+              background: '#151528 url("/images/rabbit_beta.png") center/cover no-repeat',
+            }}
+          />
           <div css={textAreaWrapperCss}>
             <textarea value={text} onChange={handleChangeTextarea} rows={2} placeholder="덕담 메시지를 입력해줘" />
             <div css={underlineCss}>
@@ -49,12 +82,14 @@ export default function Page() {
       <FloatingBottomArea backgroundColor="#F0F4FC">
         <div css={buttonWrapper}>
           {/* NOTE: 베타테스트 버튼 */}
-          <Button as="link" to="/result/feedback">
+          {/* <Button as="link" to="/result/feedback">
             베타테스트 후기 남기기
-          </Button>
+          </Button> */}
 
-          {/* <Button buttonType="secondary">카드 다운로드</Button>
-          <Button>결과 공유하기</Button> */}
+          <Button buttonType="secondary" onClick={handleClickDownload}>
+            카드 다운로드
+          </Button>
+          <Button>결과 공유하기</Button>
         </div>
       </FloatingBottomArea>
     </>
@@ -110,6 +145,7 @@ const textAreaWrapperCss = css`
     overflow: hidden;
     text-align: center;
     z-index: 5;
+    white-space: pre-wrap;
   }
 `;
 
