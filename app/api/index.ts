@@ -8,7 +8,7 @@ const PRODUCTION_API_URL = import.meta.env.VITE_PRODUCTION_API_URL as string;
 
 const baseApi = axios.create({
   baseURL: import.meta.env.MODE === "development" ? DEVELOPMENT_API_URL : PRODUCTION_API_URL,
-  timeout: 1000,
+  timeout: 2000,
   headers: {
     "Content-Type": "application/json",
   },
