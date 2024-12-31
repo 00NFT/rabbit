@@ -5,13 +5,6 @@ import { loadFull } from "tsparticles";
 
 const image = Array.from({ length: 4 }).map((_, idx) => ({
   src: `/illusts/confetti${idx + 1}.svg`,
-  width: 30,
-  height: 30,
-  particles: {
-    size: {
-      value: 30,
-    },
-  },
 }));
 
 export default function Confetti({ condition }: { condition: boolean }) {
@@ -28,7 +21,9 @@ export default function Confetti({ condition }: { condition: boolean }) {
       },
       emitters: [
         {
-          direction: "top-right",
+          // direction: "top-right",
+          direction: 280,
+
           position: {
             x: 0,
             y: 100,
@@ -37,12 +32,19 @@ export default function Confetti({ condition }: { condition: boolean }) {
             count: 1,
           },
           rate: {
-            quantity: 4,
+            quantity: 6,
             delay: 1000,
+          },
+
+          particles: {
+            move: {
+              angle: { min: -3, max: 3 },
+            },
           },
         },
         {
-          direction: "top-left",
+          // direction: "top-left",
+          direction: 260,
 
           position: {
             x: 100,
@@ -52,8 +54,14 @@ export default function Confetti({ condition }: { condition: boolean }) {
             count: 1,
           },
           rate: {
-            quantity: 4,
+            quantity: 6,
             delay: 1000,
+          },
+
+          particles: {
+            move: {
+              angle: { min: -3, max: 3 },
+            },
           },
         },
       ],
@@ -61,23 +69,20 @@ export default function Confetti({ condition }: { condition: boolean }) {
         enable: true,
         zIndex: -1,
       },
-      number: {
-        value: 0,
-      },
       particles: {
+        size: {
+          value: 40,
+        },
         move: {
-          decay: 0.01,
           enable: true,
           gravity: {
             enable: true,
-            acceleration: 80,
-            maxSpeed: 200,
+            acceleration: 120,
           },
           outModes: {
             default: "none",
           },
-
-          speed: { min: 30, max: 30 },
+          speed: { min: 40, max: 55 },
         },
         shape: {
           type: ["image"],

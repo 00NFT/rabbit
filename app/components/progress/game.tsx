@@ -117,7 +117,7 @@ export default function Game() {
         <div css={paddingWrapperCss}>
           <ProgressBar progress={progress} />
           <div css={imageGridCss(step + 1)}>
-            {cards.map((card: CardType, idx: number) => (
+            {cards.map((card, idx: number) => (
               <FlipCard key={`${cards.length}_${idx}`} onClick={() => handleClick(card)} delay={FLIP_DELAY} duration={FLIP_DURATION}>
                 <div
                   css={[
