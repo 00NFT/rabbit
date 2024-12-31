@@ -8,9 +8,11 @@ import { nameAtom } from "~/utils/usePhaseActions";
 
 import html2canvas from "html2canvas";
 import fileSaver from "file-saver";
+import { useParams } from "@remix-run/react";
 
 export default function Page() {
   const nickname = useAtomValue(nameAtom);
+  const { rabbit = "0000" } = useParams();
 
   const cardRef = useRef<HTMLDivElement>(null);
   const [text, setText] = useState("");
@@ -64,7 +66,7 @@ export default function Page() {
           <div
             css={imageCss}
             style={{
-              background: '#151528 url("/images/rabbit_beta.png") center/cover no-repeat',
+              background: `#151528 url("/images/result/rabbit_${rabbit}.png") center/cover no-repeat`,
             }}
           />
           <div css={textAreaWrapperCss}>

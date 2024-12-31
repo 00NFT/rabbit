@@ -93,7 +93,7 @@ export default function Page() {
       </div>
 
       <div css={buttons.wrapperCss}>
-        <Button as="link" to="/result/card">
+        <Button as="link" to={`/result/${rabbit}/card`}>
           새해 덕담카드 만들기
         </Button>
         <Link to={"/"} css={buttons.homeButtonCss}>
