@@ -44,7 +44,7 @@ const navigationCss = css`
   display: flex;
   align-items: center;
 
-  max-width: 600px;
+  max-width: 400px;
   width: 100%;
   height: 64px;
 
@@ -61,6 +61,6 @@ const navigationCss = css`
 
 const placeholderCss = css`
   height: 64px;
-  max-width: 600px;
+  max-width: 400px;
   width: 100%;
 `;

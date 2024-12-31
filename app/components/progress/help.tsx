@@ -2,11 +2,11 @@ import { css } from "@emotion/react";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { useNavigate } from "@remix-run/react";
 import { ArrowLeft } from "public/icons/Arrow";
-import { Button } from "../button";
+import { Fragment, useEffect, useState } from "react";
 import TypewriterComponent from "typewriter-effect";
 import { ANIMATION } from "~/utils/animation";
 import { usePhaseActions } from "~/utils/usePhaseActions";
-import { Fragment, useEffect, useState } from "react";
+import { Button } from "../button";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
@@ -117,7 +117,7 @@ const navigationCss = css`
   display: flex;
   align-items: center;
 
-  max-width: 600px;
+  max-width: 400px;
   width: 100%;
 
   margin: 0 auto;
@@ -131,7 +131,7 @@ const buttons = {
     bottom: 0;
 
     width: 100%;
-    max-width: 600px;
+    max-width: 400px;
     margin: 0 auto;
     padding: 12px 24px 32px;
 

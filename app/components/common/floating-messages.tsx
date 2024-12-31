@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { css } from "@emotion/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 type Props = {
   messages: string[];
@@ -63,7 +63,7 @@ const floatingMessagesCss = {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    max-width: 600px;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -51,7 +51,7 @@ const navigationCss = css`
   display: flex;
   align-items: center;
 
-  max-width: 600px;
+  max-width: 400px;
   width: 100%;
 
   margin: 0 auto;

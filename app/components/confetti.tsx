@@ -112,7 +112,7 @@ const containerCss = css`
   align-items: end;
   height: 100%;
   width: 100%;
-  max-width: 600px;
+  max-width: 400px;
 
   bottom: 0;
   left: 50%;
