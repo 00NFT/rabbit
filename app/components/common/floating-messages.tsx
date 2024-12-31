@@ -8,7 +8,7 @@ type Props = {
 
 const mockMessage = ["헤온 용사 토끼 구조작전 실행 중!", "현토리 용사 토끼 구하는 중...", "지렁이 용사가 지금 토끼를 구하고 있어!"];
 
-export default function FloatingMessages({ messages }: Props) {
+export default function FloatingMessages({ messages = mockMessage }: Props) {
   const [currentMessageIndex, setCurrentMessageIndex] = useState<number>(0);
 
   useEffect(() => {

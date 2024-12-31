@@ -14,15 +14,19 @@ type dataType = {
 };
 
 export const loader: LoaderFunction = async () => {
-  const loaderData = await getPlayerName();
-  return loaderData;
+  try {
+    const loaderData = await getPlayerName();
+    return loaderData;
+  } catch (error) {
+    return [];
+  }
 };
 
 export default function Index() {
   const { name, phase, movePhase, changeName } = usePhaseActions();
   const loaderData = useLoaderData<typeof loader>();
   const messageRule = ["용사 토끼 구조작전 실행 중!", "용사 토끼 구하는 중...", "용사가 지금 토끼를 구하고 있어!"];
-  const scaledLoaderData = loaderData?.data.reduce((acc: string[], cur: dataType, idx: number) => {
+  const scaledLoaderData = loaderData?.data?.reduce((acc: string[], cur: dataType, idx: number) => {
     if (cur.USERNAME) {
       const messageIdx = idx % messageRule.length;
       acc.push(`${cur.USERNAME} ${messageRule[messageIdx]}`);
