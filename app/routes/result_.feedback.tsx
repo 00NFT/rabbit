@@ -26,7 +26,7 @@ const initialFeedbackValues = {
 export default function Page() {
   const navigate = useNavigate();
   const username = useAtomValue(nameAtom);
-  const { mutate } = usePostFeedback();
+  const { mutate, isPending } = usePostFeedback();
   const [feedbackValues, setFeedbackValues] = useState<FeedbackValues>(initialFeedbackValues);
 
   const handleChangeFormValues = (type: keyof FeedbackValues, value: string) => {
@@ -49,10 +49,10 @@ export default function Page() {
       },
       {
         onSuccess: () => {
-          console.log("success!");
           navigate("/result/feedback-complete");
         },
         onError: (e) => {
+          alert("문제가 발생했어요!");
           console.log(e);
         },
       },
@@ -126,7 +126,9 @@ export default function Page() {
       </div>
 
       <FloatingBottomArea>
-        <Button onClick={handleSubmit}>제출하기</Button>
+        <Button onClick={handleSubmit} disabled={isPending}>
+          제출하기
+        </Button>
       </FloatingBottomArea>
     </>
   );
