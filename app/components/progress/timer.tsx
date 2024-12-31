@@ -72,10 +72,8 @@ const countdownCss = css`
   justify-content: center;
   align-items: center;
 
-  width: 100px;
-  height: 100px;
-
-  padding: 30px;
+  width: 70px;
+  height: 70px;
 
   background-color: white;
   border-radius: 100%;
