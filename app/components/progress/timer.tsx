@@ -30,13 +30,13 @@ export default function Timer() {
 
       <motion.div
         key={count}
-        initial={{ scale: 2, fontSize: "38px" }}
-        animate={{ scale: 1, fontSize: "24px" }}
+        initial={{ scale: 2 }}
+        animate={{ scale: 1 }}
         exit={{ scale: 0, opacity: 0 }}
         transition={{ duration: 1, repeat: 3, ease: "easeInOut" }}
         css={countdownCss}
       >
-        {count > 0 ? count : null}
+        <p>{count > 0 ? count : null}</p>
       </motion.div>
     </div>
   );
@@ -68,10 +68,17 @@ const navigationCss = css`
 `;
 
 const countdownCss = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100px;
+  height: 100px;
+
   padding: 30px;
 
-  //   background-color: white;
-  //   border-radius: 50%;
+  background-color: white;
+  border-radius: 100%;
 
-  //   aspect-ratio: 1 / 1;
+  font-size: 38px;
 `;
