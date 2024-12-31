@@ -2,7 +2,6 @@ import type { LinksFunction } from "@remix-run/node";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
 import "../style/fonts.css";
 import "../style/global.css";
-import { GameProvider } from "./providers/game-provider";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -23,7 +22,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <GameProvider>{children}</GameProvider>
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>

@@ -5,10 +5,9 @@ import { Button } from "~/components/button";
 import FlipCard from "~/components/flip-card";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
 import ProgressBar from "~/components/progress-bar";
-import { useGame } from "~/hooks/useGame";
 import { useTimer } from "~/hooks/useTimer";
-import { CardType } from "~/providers/game-provider";
 import { executeSequentially } from "~/utils/executeSequentially";
+import { useGameProgress } from "~/utils/useGameProgress";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 import Confetti from "../confetti";
 
@@ -23,7 +22,7 @@ export default function Game() {
   const [status, setStatus] = useState<StatusType>("PENDING");
 
   const { decreasePhase } = usePhaseActions();
-  const { generateGame, checkAnswer, timeover, cards, step, resetStep, nextStep, target } = useGame();
+  const { generateGame, checkAnswer, timeover, cards, step, resetStep, nextStep, currentStep } = useGameProgress();
   const { start, stop, reset, progress } = useTimer(PROGRESS_DURATION + (step - 1) * 1200);
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export default function Game() {
   const getHeadingText = () => {
     switch (status) {
       case "PENDING":
-        return `다르게 생긴 ${target.label} 찾아줘`;
+        return `다르게 생긴 ${currentStep.label} 찾아줘`;
       case "SUCCESS":
         return `정답!`;
       case "FAILURE":
