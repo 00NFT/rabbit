@@ -23,7 +23,7 @@ export default function Question() {
         </button>
       </nav>
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 3 }} css={descriptionCss}>
-        12개의 그림 중
+        여러 개의 그림 중
         <br />
         다른 그림 하나를 찾아줘!
       </motion.p>
