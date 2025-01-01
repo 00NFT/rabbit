@@ -34,6 +34,14 @@ export default function Page() {
 
   const handleClickDownload = async () => {
     if (!cardRef.current) return;
+    const hiddenTextarea = cardRef.current.querySelector("#rabbit_textarea") as HTMLElement;
+    const printTextarea = cardRef.current.querySelector("#rabbit_print_textarea") as HTMLElement;
+
+    if (hiddenTextarea && printTextarea) {
+      hiddenTextarea.style.visibility = "hidden";
+      printTextarea.style.visibility = "visible";
+    }
+
     try {
       const canvas = await html2canvas(cardRef.current, {
         useCORS: true,
@@ -50,26 +58,31 @@ export default function Page() {
     } catch (error) {
       console.error("이미지 저장에 실패했어요!");
     }
+
+    if (hiddenTextarea && printTextarea) {
+      hiddenTextarea.style.visibility = "visible";
+      printTextarea.style.visibility = "hidden";
+    }
   };
 
   const handleClickShare = () => {
     const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${encrypt(rabbit)}`;
 
-    if (navigator?.canShare()) {
-      navigator.share({
-        title: "새해맞이 달토끼 구출 대작전",
-        text: `${nickname} 용사의 덕담카드`,
-        url: shareUrl,
-      });
+    if (!navigator.canShare) {
+      try {
+        navigator.clipboard.writeText(shareUrl);
+        alert("링크가 복사되었어요!");
+      } catch {
+        alert("문제가 발생했어요!");
+      }
       return;
     }
 
-    try {
-      navigator.clipboard.writeText(shareUrl);
-      alert("링크가 복사되었어요!");
-    } catch {
-      alert("문제가 발생했어요!");
-    }
+    navigator.share({
+      title: "새해맞이 달토끼 구출 대작전",
+      text: `${nickname} 용사의 덕담카드`,
+      url: shareUrl,
+    });
   };
 
   return (
@@ -91,7 +104,21 @@ export default function Page() {
             }}
           />
           <div css={textAreaWrapperCss}>
-            <textarea value={text} onChange={handleChangeTextarea} rows={2} placeholder={"2025년도 새해\n덕담 메시지를 입력해주세요!✨"} />
+            <div
+              id="rabbit_print_textarea"
+              css={[textareaCss, printTextareaCss]}
+              dangerouslySetInnerHTML={{
+                __html: text.replace("\n", "<br/>"),
+              }}
+            />
+            <textarea
+              id="rabbit_textarea"
+              css={textareaCss}
+              value={text}
+              onChange={handleChangeTextarea}
+              rows={2}
+              placeholder={"2025년도 새해\n덕담 메시지를 입력해주세요!✨"}
+            />
             <div css={underlineCss}>
               <div />
               <div />
@@ -154,24 +181,35 @@ const textAreaWrapperCss = css`
   flex-direction: column;
 
   width: 100%;
+`;
 
-  textarea {
-    width: 100%;
-    height: 100%;
-    font-size: 16px;
-    padding: 10px 0 0;
-    line-height: 36px;
-    border: none;
-    outline: none;
-    resize: none;
-    color: black;
-    overflow: hidden;
-    text-align: center;
-    z-index: 5;
-    white-space: pre-wrap;
-  }
+const printTextareaCss = css`
+  position: absolute;
+  top: -5px;
 
-  textarea::placeholder {
+  visibility: hidden;
+
+  height: auto;
+  padding-bottom: 10px;
+  z-index: 1;
+`;
+
+const textareaCss = css`
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  padding: 10px 0 0;
+  line-height: 36px;
+  border: none;
+  outline: none;
+  resize: none;
+  color: black;
+  overflow: hidden;
+  text-align: center;
+  z-index: 5;
+  white-space: pre-wrap;
+
+  &::placeholder {
     white-space: pre-line;
     color: #8e8e8e;
   }
