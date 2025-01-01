@@ -1,0 +1,79 @@
+/* style.module.css */
+
+.container {
+  position: relative;
+  padding-top: 42px;
+  height: 100vh;
+
+  background: #151528 url("/images/external-browser/inapp_img.png") center/cover no-repeat;
+  background-color: #151528;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 22px;
+  align-items: center;
+  text-align: center;
+  color: white;
+  font-weight: 400;
+
+  position: relative;
+  top: 20%;
+}
+
+.textWrapper h1 {
+  font-size: 20px;
+}
+
+.textWrapper span {
+  font-size: 14px;
+}
+
+.buttonsWrapper {
+  position: fixed;
+  bottom: 0;
+
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin: 0 auto;
+  padding: 12px 24px 32px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+}
+
+.buttonsWrapper a {
+  text-align: center;
+}
+
+.buttonsWrapper span {
+  color: #6b7ca1;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.buttonsWrapper button {
+  background-color: white;
+  padding: 16px 0;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.cardButton {
+  font-size: 14px;
+  padding: 16px 0;
+  border-radius: 8px;
+
+  color: white;
+  background-color: #151528;
+}
+
+.homeButton {
+  font-size: 12px;
+  color: #7d7d7d;
+}
