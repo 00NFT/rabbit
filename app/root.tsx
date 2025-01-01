@@ -4,6 +4,7 @@ import "../style/fonts.css";
 import "../style/global.css";
 import { QueryProvider } from "./providers/query-provider";
 import { PreventExternalBrowser } from "./components/common/prevent-external-browser";
+import { useEffect } from "react";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -30,11 +31,18 @@ export const loader: LoaderFunction = ({ request }) => {
   const isInstagram = userAgent?.includes("Instagram");
   const isRestrictedBrowser = isKakao || isInstagram;
 
-  return json({ isRestrictedBrowser });
+  return json({ isRestrictedBrowser, platform: { isKakao, isInstagram } });
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { isRestrictedBrowser } = useLoaderData<typeof loader>();
+  const { isRestrictedBrowser, platform } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    if (platform.isKakao) {
+      const URL = window.location.href;
+      window.open(`kakaotalk://web/openExternal?url=${encodeURIComponent(URL)}`);
+    }
+  }, []);
   return (
     <html lang="en">
       <head>
