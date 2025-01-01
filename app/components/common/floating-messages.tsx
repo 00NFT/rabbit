@@ -14,7 +14,7 @@ export default function FloatingMessages({ messages = mockMessage }: Props) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentMessageIndex((prevIndex) => (prevIndex + 1) % messages.length);
-    }, 3000);
+    }, 1500);
 
     return () => clearInterval(interval);
   }, []);
@@ -44,7 +44,7 @@ export default function FloatingMessages({ messages = mockMessage }: Props) {
             x: getXPosition(currentMessageIndex),
           }}
           transition={{
-            duration: 1.5,
+            duration: 1.2,
             ease: "easeInOut",
           }}
           css={floatingMessagesCss.message}
