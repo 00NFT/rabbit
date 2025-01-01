@@ -7,6 +7,7 @@ import TypewriterComponent from "typewriter-effect";
 import { ANIMATION } from "~/utils/animation";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 import { Button } from "../button";
+import { helpMessage } from "~/utils/message";
 
 export const meta: MetaFunction = () => {
   return [{ title: "토끼 구출 대작전" }, { name: "description", content: "Welcome to Remix!" }];
@@ -20,12 +21,13 @@ export default function Help() {
   const navigate = useNavigate();
   const { increasePhase } = usePhaseActions();
   const [isVisible, setIsVisible] = useState(false);
-  const [storySpeed, setStorySpeed] = useState(30);
+  const [storySpeed] = useState(30);
+  const [skipStory, setSkipStory] = useState(false);
 
   useEffect(() => {
     const skipStory = () => {
       setIsVisible(true);
-      setStorySpeed(0);
+      setSkipStory(true);
     };
 
     const timer = setTimeout(() => {
@@ -48,18 +50,20 @@ export default function Help() {
             <ArrowLeft />
           </button>
         </nav>
-        <img id="mysterioutRabbit" src="/images/rabbit-mysterious.svg" alt="Mysterious Rabbit" />
+        <img id="mysterioutRabbit" src="/images/rabbit-mysterious.svg" alt="Mysterious Rabbit" width={205} height={279} />
         <div css={decriptionCss}>
-          <TypewriterComponent
-            options={{
-              strings: `거기 용사!
-                <br/> 옆동네 토끼가 내 아이템을 훔쳐가서 내 모습을 잃어버렸어!
-                명절 떡을 만들수가 없다고 날 좀 도와주지 않겠어?`,
-              autoStart: true,
-              loop: false,
-              delay: storySpeed,
-            }}
-          />
+          {skipStory ? (
+            <div className="Typewriter" dangerouslySetInnerHTML={{ __html: helpMessage() }} />
+          ) : (
+            <TypewriterComponent
+              options={{
+                strings: helpMessage(),
+                autoStart: true,
+                loop: false,
+                delay: storySpeed,
+              }}
+            />
+          )}
         </div>
       </div>
       <div css={buttons.wrapperCss}>

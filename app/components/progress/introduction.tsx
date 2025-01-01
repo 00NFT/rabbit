@@ -8,6 +8,7 @@ import TypewriterComponent from "typewriter-effect";
 import { ANIMATION } from "~/utils/animation";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 import { Button } from "../button";
+import { beforeGameMessage } from "~/utils/message";
 
 const assets = ["carrot", "ears", "moon", "bucket"];
 
@@ -27,12 +28,13 @@ export default function Introduction() {
   const { increasePhase, decreasePhase, name } = usePhaseActions();
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
-  const [storySpeed, setStorySpeed] = useState(30);
+  const [skipStory, setSkipStory] = useState(false);
+  const [storySpeed] = useState(30);
 
   useEffect(() => {
     const skipStory = () => {
       setIsVisible(true);
-      setStorySpeed(0);
+      setSkipStory(true);
     };
 
     const timer = setTimeout(() => {
@@ -67,6 +69,8 @@ export default function Introduction() {
                 key={item}
                 src={`/images/marquee/${item}.svg`}
                 alt={`${item} 그림`}
+                width={150}
+                height={150}
                 css={css`
                   margin-right: 20px;
                 `}
@@ -75,17 +79,18 @@ export default function Introduction() {
           })}
         </Marquee>
         <div css={decriptionCss}>
-          <TypewriterComponent
-            options={{
-              strings: `${name} 용사!
-                <br/> 앞으로 나올 게임에서 다른그림을 찾아줘!
-                <br/> 저기 위에 있는게 진짜라고 알겠지?
-                <br/> 나의 귀, 달, 당근, 절구를 부탁할게`,
-              autoStart: true,
-              loop: false,
-              delay: storySpeed,
-            }}
-          />
+          {skipStory ? (
+            <div className="Typewriter" dangerouslySetInnerHTML={{ __html: beforeGameMessage(name) }} />
+          ) : (
+            <TypewriterComponent
+              options={{
+                strings: beforeGameMessage(name),
+                autoStart: true,
+                loop: false,
+                delay: storySpeed,
+              }}
+            />
+          )}
         </div>
       </div>
       <div css={buttons.wrapperCss}>
