@@ -17,7 +17,6 @@ export default function Page() {
 
   const cardRef = useRef<HTMLDivElement>(null);
   const [text, setText] = useState("");
-  const randomPlaceholder = !Math.floor(Math.random() * 2) ? "용사야\n새해복 많이 받아라🍀" : "2025년도에\n즐거운 일만 가득해라✨";
 
   /**
    * 줄바꿈 최대 1번 / 최대 40자 제한
@@ -92,7 +91,7 @@ export default function Page() {
             }}
           />
           <div css={textAreaWrapperCss}>
-            <textarea value={text} onChange={handleChangeTextarea} rows={2} placeholder={randomPlaceholder} />
+            <textarea value={text} onChange={handleChangeTextarea} rows={2} placeholder={"2025년도 새해\n덕담 메시지를 입력해주세요!✨"} />
             <div css={underlineCss}>
               <div />
               <div />
