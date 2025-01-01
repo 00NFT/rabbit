@@ -1,11 +1,24 @@
 import { css } from "@emotion/react";
 import { Link, useParams } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/button";
+import Loading from "~/components/loading";
 import { GAME_RESULT } from "~/constants/result";
 
 export default function Page() {
   const { rabbit = "0000" } = useParams();
   const resultText = GAME_RESULT[rabbit];
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <>
