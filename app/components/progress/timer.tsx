@@ -1,12 +1,11 @@
 import { css } from "@emotion/react";
-import { ArrowLeft } from "public/icons/Arrow";
 import { useEffect, useState } from "react";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 
 export default function Timer() {
   const [count, setCount] = useState<number>(3);
 
-  const { increasePhase, decreasePhase } = usePhaseActions();
+  const { increasePhase } = usePhaseActions();
 
   useEffect(() => {
     if (count > 0) {
@@ -21,12 +20,6 @@ export default function Timer() {
 
   return (
     <div css={containerCss}>
-      <nav css={navigationCss}>
-        <button onClick={decreasePhase}>
-          <ArrowLeft />
-        </button>
-      </nav>
-
       <div css={countdownCss}>
         <p>{count > 0 ? count : null}</p>
       </div>

@@ -1,11 +1,10 @@
 import { css } from "@emotion/react";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "public/icons/Arrow";
 import { useEffect } from "react";
 import { usePhaseActions } from "~/utils/usePhaseActions";
 
 export default function Question() {
-  const { increasePhase, decreasePhase } = usePhaseActions();
+  const { increasePhase } = usePhaseActions();
 
   useEffect(() => {
     let show = setTimeout(() => {
@@ -17,11 +16,6 @@ export default function Question() {
 
   return (
     <div css={containerCss}>
-      <nav css={navigationCss}>
-        <button onClick={decreasePhase}>
-          <ArrowLeft />
-        </button>
-      </nav>
       <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 3 }} css={descriptionCss}>
         여러 개의 그림 중
         <br />
