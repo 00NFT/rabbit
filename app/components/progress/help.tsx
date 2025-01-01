@@ -131,7 +131,7 @@ const navigationCss = css`
 /* 공통 컴포넌트 필요 */
 const buttons = {
   wrapperCss: css`
-    position: fixed;
+    position: absolute;
     bottom: 0;
 
     width: 100%;

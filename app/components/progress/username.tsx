@@ -52,6 +52,7 @@ export default function UserName() {
 const containerCss = css`
   position: relative;
   padding: 84px 24px 0 24px;
+  max-height: var(--layout-max-height);
   height: 100vh;
 
   background-color: #f0f4fc;
@@ -96,7 +97,7 @@ const navigationCss = css`
 /* 공통 컴포넌트 필요 */
 const buttons = {
   wrapperCss: css`
-    position: fixed;
+    position: absolute;
     bottom: 0;
 
     width: 100%;

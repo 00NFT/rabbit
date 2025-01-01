@@ -48,6 +48,7 @@ export default function Page() {
 
 const containerCss = css`
   padding-top: 42px;
+  max-height: var(--layout-max-height);
   height: 100vh;
 `;
 
@@ -75,7 +76,7 @@ const textWrapperCss = css`
 
 const buttons = {
   wrapperCss: css`
-    position: fixed;
+    position: absolute;
     bottom: 0;
 
     width: 100%;

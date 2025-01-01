@@ -62,6 +62,7 @@ export default function Index() {
 const containerCss = css`
   position: relative;
   padding-top: 42px;
+  max-height: var(--layout-max-height);
   height: 100vh;
 
   background: #151528 url("/images/rabbit_intro.png") center/cover no-repeat;
@@ -85,7 +86,7 @@ const textWrapperCss = css`
 /* 공통 컴포넌트 필요 */
 const buttons = {
   wrapperCss: css`
-    position: fixed;
+    position: absolute;
     bottom: 0;
 
     width: 100%;
