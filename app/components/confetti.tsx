@@ -79,7 +79,7 @@ export default function Confetti({ condition }: { condition: boolean }) {
       },
       particles: {
         size: {
-          value: 40,
+          value: 20,
         },
         move: {
           enable: true,
