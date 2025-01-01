@@ -1,8 +1,9 @@
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "@remix-run/react";
+import type { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
+import { json, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
 import "../style/fonts.css";
 import "../style/global.css";
 import { QueryProvider } from "./providers/query-provider";
+import { PreventExternalBrowser } from "./components/common/prevent-external-browser";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -23,7 +24,17 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export const loader: LoaderFunction = ({ request }) => {
+  const userAgent = request.headers.get("user-agent");
+  const isKakao = userAgent?.includes("KAKAO");
+  const isInstagram = userAgent?.includes("Instagram");
+  const isRestrictedBrowser = isKakao || isInstagram;
+
+  return json({ isRestrictedBrowser });
+};
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { isRestrictedBrowser } = useLoaderData<typeof loader>();
   return (
     <html lang="en">
       <head>
@@ -34,7 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>{isRestrictedBrowser ? <PreventExternalBrowser /> : children}</QueryProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
