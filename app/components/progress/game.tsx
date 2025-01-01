@@ -102,17 +102,6 @@ export default function Game() {
   return (
     <>
       <div css={containerCss}>
-        <nav css={navigationCss}>
-          <button
-            onClick={() => {
-              resetStep();
-              decreasePhase();
-            }}
-          >
-            <ArrowLeft />
-          </button>
-        </nav>
-
         <h1>{getHeadingText()}</h1>
         <div css={paddingWrapperCss}>
           <ProgressBar progress={progress} />
