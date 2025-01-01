@@ -100,7 +100,7 @@ export default function Page() {
           <div
             css={imageCss}
             style={{
-              background: `#151528 url("/images/result/rabbit_${rabbit}.png") center/cover no-repeat`,
+              background: `#151528 url("/images/result/card/${rabbit}.png") center/cover no-repeat`,
             }}
           />
           <div css={textAreaWrapperCss}>
