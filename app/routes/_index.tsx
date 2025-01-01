@@ -62,7 +62,7 @@ export default function Index() {
 const containerCss = css`
   position: relative;
   padding-top: 42px;
-  height: 100vh;
+  height: 100dvh;
 
   background: #151528 url("/images/rabbit_intro.png") center/cover no-repeat;
   background-color: #151528;

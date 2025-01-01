@@ -35,15 +35,16 @@ export default function UserName() {
             if (e.target.value.length > 4) return;
             changeName(e.target.value);
           }}
+          placeholder="이름 입력"
           value={name}
           maxLength={4}
           ref={inputRef}
         />
-      </div>
-      <div css={buttons.wrapperCss}>
-        <Button onClick={increasePhase} disabled={!name.trim().length}>
-          다음
-        </Button>
+        <div css={buttons.wrapperCss}>
+          <Button onClick={increasePhase} disabled={!name.trim().length}>
+            다음
+          </Button>
+        </div>
       </div>
     </>
   );
@@ -52,7 +53,7 @@ export default function UserName() {
 const containerCss = css`
   position: relative;
   padding: 84px 24px 0 24px;
-  height: 100vh;
+  height: 100dvh;
 
   background-color: #f0f4fc;
 
@@ -96,12 +97,13 @@ const navigationCss = css`
 /* 공통 컴포넌트 필요 */
 const buttons = {
   wrapperCss: css`
-    position: fixed;
-    bottom: 0;
+    position: sticky;
+    margin-top: auto;
 
-    width: 100%;
+    width: 100vw;
     max-width: var(--layout-max-width);
-    margin: 0 auto;
+    box-sizing: border-box;
+
     padding: 12px 24px 32px;
 
     display: flex;

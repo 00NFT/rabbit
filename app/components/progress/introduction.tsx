@@ -162,8 +162,10 @@ const buttons = {
     position: fixed;
     bottom: 0;
 
-    width: 100%;
+    width: 100vw;
     max-width: var(--layout-max-width);
+    box-sizing: border-box;
+
     margin: 0 auto;
     padding: 12px 24px 32px;
 
