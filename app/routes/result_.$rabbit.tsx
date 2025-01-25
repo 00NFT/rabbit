@@ -1,19 +1,13 @@
 import { css } from "@emotion/react";
 import { Link, useParams } from "@remix-run/react";
-import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/button";
 import Loading from "~/components/loading";
-import { GAME_RESULT } from "~/constants/result";
-import { usePostNickname } from "~/hooks/apis/usePostNickname";
-import { nameAtom } from "~/utils/usePhaseActions";
+import { GAME_RESULT_CONTENT } from "~/constants/result";
 
 export default function Page() {
-  const username = useAtomValue(nameAtom);
-  const { mutate } = usePostNickname();
-
   const { rabbit = "0000" } = useParams();
-  const resultText = GAME_RESULT[rabbit];
+  const resultText = GAME_RESULT_CONTENT[rabbit];
 
   const [loading, setLoading] = useState(true);
 
@@ -23,14 +17,6 @@ export default function Page() {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    if (!username) {
-      return;
-    }
-
-    mutate({ username });
-  }, [username]);
 
   if (loading) {
     return <Loading />;
