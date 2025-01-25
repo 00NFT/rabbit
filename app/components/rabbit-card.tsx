@@ -2,17 +2,18 @@ import { css } from "@emotion/react";
 import { ChangeEventHandler, forwardRef } from "react";
 
 type Props = {
-  message: string;
-  onChangeMessage: ChangeEventHandler;
   rabbitId: string;
+  message: string;
+  onChangeMessage?: ChangeEventHandler;
+  textAreaOptions?: React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 };
-export const RabbitCard = forwardRef<HTMLDivElement, Props>(({ message, onChangeMessage, rabbitId }, ref) => {
+export const RabbitCard = forwardRef<HTMLDivElement, Props>(({ message, onChangeMessage, rabbitId, textAreaOptions }, ref) => {
   return (
     <div css={cardCss} ref={ref}>
       <div
         css={imageCss}
         style={{
-          background: `#151528 url("/images/result/card/${rabbitId}.png") center/cover no-repeat`,
+          background: `#151528 url("/images/result/card/rabbit_${rabbitId}.png") center/cover no-repeat`,
         }}
       />
       <div css={textAreaWrapperCss}>
@@ -30,6 +31,7 @@ export const RabbitCard = forwardRef<HTMLDivElement, Props>(({ message, onChange
           onChange={onChangeMessage}
           rows={2}
           placeholder={"2025년도 새해 덕담 메시지를\n입력해주세요! 🍀"}
+          {...textAreaOptions}
         />
         <div css={underlineCss}>
           <div />
