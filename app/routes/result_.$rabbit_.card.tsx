@@ -1,14 +1,16 @@
 import { css } from "@emotion/react";
 import { useAtomValue } from "jotai";
 import { useRef, useState } from "react";
-import { Button } from "~/components/button";
-import { FloatingBottomArea } from "~/components/floating-bottom-area";
-import { Header } from "~/components/header";
-import { nameAtom } from "~/utils/usePhaseActions";
 
 import html2canvas from "html2canvas";
 import fileSaver from "file-saver";
 import { useParams } from "@remix-run/react";
+
+import { Button } from "~/components/button";
+import { Header } from "~/components/header";
+import { RabbitCard } from "~/components/rabbit-card";
+import { FloatingBottomArea } from "~/components/floating-bottom-area";
+import { nameAtom } from "~/utils/usePhaseActions";
 import { usePostNickname } from "~/hooks/apis/usePostNickname";
 
 export default function Page() {
@@ -117,35 +119,7 @@ export default function Page() {
           덕담카드 만들기
         </h1>
 
-        <div css={cardCss} ref={cardRef}>
-          <div
-            css={imageCss}
-            style={{
-              background: `#151528 url("/images/result/card/${rabbit}.png") center/cover no-repeat`,
-            }}
-          />
-          <div css={textAreaWrapperCss}>
-            <div
-              id="rabbit_print_textarea"
-              css={[textareaCss, printTextareaCss]}
-              dangerouslySetInnerHTML={{
-                __html: message.replace("\n", "<br/>"),
-              }}
-            />
-            <textarea
-              id="rabbit_textarea"
-              css={textareaCss}
-              value={message}
-              onChange={handleChangeTextarea}
-              rows={2}
-              placeholder={"2025년도 새해\n덕담 메시지를 입력해주세요!✨"}
-            />
-            <div css={underlineCss}>
-              <div />
-              <div />
-            </div>
-          </div>
-        </div>
+        <RabbitCard message={message} onChangeMessage={handleChangeTextarea} rabbitId={rabbit} ref={cardRef} />
 
         <p css={descriptionCss}>최대 2줄, 40글자까지 작성 가능합니다</p>
       </div>
@@ -175,79 +149,7 @@ const containerCss = css`
     font-size: 20px;
     text-align: center;
     padding-top: 12px;
-  }
-`;
-
-const imageCss = css`
-  width: 100%;
-  aspect-ratio: 1/1;
-
-  object-fit: cover;
-  border-radius: 12px;
-
-  background-color: #151528;
-`;
-
-const cardCss = css`
-  padding: 16px 17px;
-  margin-top: 24px;
-  border-radius: 16px;
-  background-color: #dde6fa;
-`;
-
-const textAreaWrapperCss = css`
-  position: relative;
-
-  display: flex;
-  flex-direction: column;
-
-  width: 100%;
-`;
-
-const printTextareaCss = css`
-  position: absolute;
-  top: -5px;
-
-  visibility: hidden;
-
-  height: auto;
-  padding-bottom: 10px;
-  z-index: 1;
-`;
-
-const textareaCss = css`
-  width: 100%;
-  height: 100%;
-  font-size: 16px;
-  padding: 10px 0 0;
-  line-height: 36px;
-  border: none;
-  outline: none;
-  resize: none;
-  color: black;
-  overflow: hidden;
-  text-align: center;
-  z-index: 5;
-  white-space: pre-wrap;
-
-  &::placeholder {
-    white-space: pre-line;
-    color: #8e8e8e;
-  }
-`;
-
-const underlineCss = css`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-
-  div {
-    border-bottom: 1px solid #6b7ca1;
+    margin-bottom: 24px;
   }
 `;
 
