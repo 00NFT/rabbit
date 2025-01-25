@@ -29,7 +29,7 @@ export const RabbitCard = forwardRef<HTMLDivElement, Props>(({ message, onChange
           value={message}
           onChange={onChangeMessage}
           rows={2}
-          placeholder={"2025년도 새해\n덕담 메시지를 입력해주세요!✨"}
+          placeholder={"2025년도 새해 덕담 메시지를\n입력해주세요! 🍀"}
         />
         <div css={underlineCss}>
           <div />
@@ -43,28 +43,30 @@ export const RabbitCard = forwardRef<HTMLDivElement, Props>(({ message, onChange
 RabbitCard.displayName = "rabbit_card";
 
 const cardCss = css`
-  padding: 16px 17px;
+  padding-bottom: 17px;
   border-radius: 16px;
+  overflow: hidden;
   background-color: #dde6fa;
 `;
 
 const imageCss = css`
   width: 100%;
-  aspect-ratio: 1/1;
+  aspect-ratio: 312/337;
 
   object-fit: cover;
-  border-radius: 12px;
 
   background-color: #151528;
 `;
 
 const textAreaWrapperCss = css`
   position: relative;
+  box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
 
-  width: 100%;
+  width: calc(100%-32px);
+  margin: 0 16px;
 `;
 
 const printTextareaCss = css`
@@ -82,7 +84,7 @@ const textareaCss = css`
   width: 100%;
   height: 100%;
   font-size: 16px;
-  padding: 10px 0 0;
+  padding-top: 10px;
   line-height: 36px;
   border: none;
   outline: none;
