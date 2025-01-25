@@ -2,101 +2,144 @@ import { css } from "@emotion/react";
 import { useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/button";
+import { FloatingBottomArea } from "~/components/floating-bottom-area";
+import Loading from "~/components/loading";
+import { RabbitCard } from "~/components/rabbit-card";
 import { GAME_RESULT_CONTENT, gameResultContent } from "~/constants/result";
 import { useGetPlayerGameInfos } from "~/hooks/apis/useGetPlayerGameInfos";
 
+// NOTE: 테스트 용 (제거 예정)
+// const tempInitialGameResult = {
+//   image: "0000",
+//   text: GAME_RESULT_CONTENT["0000"],
+//   username: "정졍",
+//   message: "새해 복 마니 받아라\n뿡뿡💨",
+// };
+
+type gameResult = {
+  image: string;
+  text: gameResultContent;
+  username: string;
+  message: string;
+};
 export default function Page() {
   const { rabbit = "" } = useParams();
-  const { data } = useGetPlayerGameInfos({ id: rabbit });
+  const { isLoading, data } = useGetPlayerGameInfos({ id: rabbit });
 
-  const [gameResult, setGameResult] = useState<{ image: string; text: gameResultContent }>({
-    image: "0000",
-    text: GAME_RESULT_CONTENT["0000"],
-  });
+  const [gameResult, setGameResult] = useState<gameResult>();
 
   useEffect(() => {
     if (!data) return;
 
     setGameResult({
       image: data.RESULT,
-      text: GAME_RESULT_CONTENT[data?.RESULT],
+      text: GAME_RESULT_CONTENT[data.RESULT],
+      username: data.USERNAME,
+      message: data.CARD_MESSAGE,
     });
   }, [data]);
 
-  // NOTE: 로딩 표시?
-  if (!gameResult) return;
+  if (isLoading || !gameResult) {
+    return <Loading message={"덕담카드를 꺼내는 중이야!\n잠시만 기다려줘"} />;
+  }
   return (
     <>
-      <div
-        css={containerCss}
-        style={{
-          background: `#151528 url("/images/result/rabbit_${gameResult.image}.png") center/cover no-repeat`,
-        }}
-      >
-        <div css={textWrapperCss}>
-          <h1>{gameResult?.text.title}</h1>
-          <div>{gameResult?.text.description}</div>
+      <div css={containerCss}>
+        <div>
+          <h1 css={cardTitleCss}>{gameResult.username} 용사의 덕담카드</h1>
+          <RabbitCard
+            message={gameResult.message}
+            rabbitId={gameResult.image}
+            textAreaOptions={{
+              disabled: true,
+            }}
+          />
+        </div>
+
+        <div
+          css={result.wrapperCss}
+          style={{
+            background: `#151528 url("/images/result/rabbit_${gameResult.image}.png") center/cover no-repeat`,
+          }}
+        >
+          <div css={result.textWrapperCss}>
+            <h1>{gameResult?.text.title}</h1>
+            <div>{gameResult?.text.description}</div>
+          </div>
+        </div>
+
+        <div css={descriptionCss}>
+          <h2>
+            새해맞이 달토끼 구출작전에는
+            <br />
+            다양한 종류의 토끼가 있어!
+            <br />
+            너만의 토끼를 찾고 덕담카드도 만들어봐
+          </h2>
         </div>
       </div>
 
-      <div css={buttons.wrapperCss}>
+      <FloatingBottomArea backgroundColor="#F0F4FC">
         <Button as="link" to={`/`}>
           나도 토끼 구하러 가기
         </Button>
-      </div>
+      </FloatingBottomArea>
     </>
   );
 }
 
 const containerCss = css`
-  padding-top: 42px;
-  height: 100vh;
+  padding: 44px 24px 0;
 `;
 
-const textWrapperCss = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+const cardTitleCss = css`
+  font-size: 20px;
   text-align: center;
-  color: white;
-
-  > h1 {
-    font-weight: 400;
-    font-size: 20px;
-  }
-
-  > div {
-    padding-top: 12px;
-
-    font-weight: 400;
-    font-size: 14px;
-    white-space: pre-wrap;
-  }
+  padding-top: 12px;
+  margin-bottom: 20px;
 `;
 
-const buttons = {
+const result = {
   wrapperCss: css`
-    position: fixed;
-    bottom: 0;
-
     width: 100%;
-    max-width: var(--layout-max-width);
-    margin: 0 auto;
-    padding: 12px 24px 32px;
+    aspect-ratio: 312/660;
 
+    border-radius: 20px;
+    overflow: hidden;
+
+    margin-top: 52px;
+    padding-top: 40px;
+  `,
+
+  textWrapperCss: css`
     display: flex;
     flex-direction: column;
-    gap: 12px;
     justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
 
-    > a {
-      text-align: center;
+    > h1 {
+      font-weight: 400;
+      font-size: 20px;
+    }
+
+    > div {
+      padding-top: 28px;
+
+      font-weight: 400;
+      font-size: 14px;
+      white-space: pre-wrap;
     }
   `,
-
-  homeButtonCss: css`
-    font-size: 12px;
-    color: #7d7d7d;
-  `,
 };
+
+const descriptionCss = css`
+  padding: 36px 0 52px;
+
+  > h2 {
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+  }
+`;

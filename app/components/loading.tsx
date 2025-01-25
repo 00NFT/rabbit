@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 
 const images = ["carrot", "ear", "moon", "mortar"];
 
-export default function Loading() {
+type Props = {
+  message?: string;
+};
+export default function Loading({ message = "지금까지 찾아준 것들로 단장중이야\n조금만 기다려줘" }: Props) {
   const [current, setCurrent] = useState<number>(0);
 
   useEffect(() => {
@@ -19,10 +22,8 @@ export default function Loading() {
       <div>
         <img src={`/illusts/${images[current]}_right.PNG`} css={imageCss} alt="loading" />
         <p>
+          {message}
           {/** TODO: 사용자가 입력한 이름 활용한 멘트로 변경 */}
-          지금까지 찾아준 것들로 단장중이야
-          <br />
-          조금만 기다려줘
         </p>
       </div>
     </div>
@@ -38,6 +39,7 @@ const containerCss = css`
   height: 100%;
 
   text-align: center;
+  white-space: pre-wrap;
 `;
 
 const imageCss = css`
