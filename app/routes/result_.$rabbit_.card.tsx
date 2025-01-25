@@ -9,27 +9,28 @@ import { nameAtom } from "~/utils/usePhaseActions";
 import html2canvas from "html2canvas";
 import fileSaver from "file-saver";
 import { useParams } from "@remix-run/react";
-import { encrypt } from "~/utils/crypto";
+import { usePostNickname } from "~/hooks/apis/usePostNickname";
 
 export default function Page() {
   const nickname = useAtomValue(nameAtom);
   const { rabbit = "0000" } = useParams();
+  const { mutate } = usePostNickname();
 
   const cardRef = useRef<HTMLDivElement>(null);
-  const [text, setText] = useState("");
+  const [message, setMessage] = useState("");
 
   /**
    * 줄바꿈 최대 1번 / 최대 40자 제한
    */
   const handleChangeTextarea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    const newValue = value
+    const formattedMessage = value
       .split(/[\r\n]/)
       .slice(0, 2)
       .join("\n")
       .slice(0, 40);
 
-    setText(newValue);
+    setMessage(formattedMessage);
   };
 
   const handleClickDownload = async () => {
@@ -65,9 +66,7 @@ export default function Page() {
     }
   };
 
-  const handleClickShare = () => {
-    const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${encrypt(rabbit)}`;
-
+  const shareRabbitLink = (shareUrl: string) => {
     if (!navigator.canShare) {
       try {
         navigator.clipboard.writeText(shareUrl);
@@ -80,9 +79,31 @@ export default function Page() {
 
     navigator.share({
       title: "새해맞이 달토끼 구출 대작전",
-      text: `${nickname} 용사의 덕담카드`,
+      text: `${nickname} 용사의 덕담카드 🐰`,
       url: shareUrl,
     });
+  };
+
+  const handleClickShare = () => {
+    mutate(
+      {
+        message,
+        username: nickname,
+        game_result: rabbit,
+      },
+      {
+        onSuccess: ({ id }) => {
+          // TODO: console.log 제거 예정
+          console.log(id);
+          const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${id}`;
+          shareRabbitLink(shareUrl);
+        },
+        onError: (error) => {
+          console.error(error);
+          alert("문제가 발생했어요!");
+        },
+      },
+    );
   };
 
   return (
@@ -108,13 +129,13 @@ export default function Page() {
               id="rabbit_print_textarea"
               css={[textareaCss, printTextareaCss]}
               dangerouslySetInnerHTML={{
-                __html: text.replace("\n", "<br/>"),
+                __html: message.replace("\n", "<br/>"),
               }}
             />
             <textarea
               id="rabbit_textarea"
               css={textareaCss}
-              value={text}
+              value={message}
               onChange={handleChangeTextarea}
               rows={2}
               placeholder={"2025년도 새해\n덕담 메시지를 입력해주세요!✨"}

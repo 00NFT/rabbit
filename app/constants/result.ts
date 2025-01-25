@@ -1,8 +1,9 @@
-export const GAME_RESULT: {
-  [key: string]: {
-    title: string;
-    description: string;
-  };
+export type gameResultContent = {
+  title: string;
+  description: string;
+}
+export const GAME_RESULT_CONTENT: {
+  [key: string]: gameResultContent;
 } = {
   "0000": {
     title: "모든걸 잃어버린 달토끼",

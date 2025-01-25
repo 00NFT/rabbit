@@ -17,7 +17,7 @@ export default function Loading() {
   return (
     <div css={containerCss}>
       <div>
-        <img src={`/illusts/${images[current]}_right.PNG`} css={imageCss} />
+        <img src={`/illusts/${images[current]}_right.PNG`} css={imageCss} alt="loading" />
         <p>
           {/** TODO: 사용자가 입력한 이름 활용한 멘트로 변경 */}
           지금까지 찾아준 것들로 단장중이야

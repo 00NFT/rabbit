@@ -1,25 +1,38 @@
 import { css } from "@emotion/react";
 import { useParams } from "@remix-run/react";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/button";
-import { GAME_RESULT } from "~/constants/result";
-import { decrypt } from "~/utils/crypto";
+import { GAME_RESULT_CONTENT, gameResultContent } from "~/constants/result";
+import { useGetPlayerGameInfos } from "~/hooks/apis/useGetPlayerGameInfos";
 
 export default function Page() {
-  const { rabbit } = useParams();
-  const decryptRabbit = decrypt(rabbit ?? "") ?? "";
-  const resultText = GAME_RESULT[decryptRabbit] ?? GAME_RESULT["0000"];
+  const { rabbit = "" } = useParams();
+  const { data } = useGetPlayerGameInfos({ id: rabbit });
 
+  const [gameResult, setGameResult] = useState<{ image: string; text: gameResultContent }>();
+
+  useEffect(() => {
+    if (!data) return;
+
+    setGameResult({
+      image: data.RESULT,
+      text: GAME_RESULT_CONTENT[data?.RESULT],
+    });
+  }, [data]);
+
+  // NOTE: 로딩 표시?
+  if (!gameResult) return;
   return (
     <>
       <div
         css={containerCss}
         style={{
-          background: `#151528 url("/images/result/rabbit_${decryptRabbit}.png") center/cover no-repeat`,
+          background: `#151528 url("/images/result/rabbit_${gameResult.image}.png") center/cover no-repeat`,
         }}
       >
         <div css={textWrapperCss}>
-          <h1>{resultText.title}</h1>
-          <div>{resultText.description}</div>
+          <h1>{gameResult?.text.title}</h1>
+          <div>{gameResult?.text.description}</div>
         </div>
       </div>
 
