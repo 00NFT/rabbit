@@ -9,7 +9,10 @@ export default function Page() {
   const { rabbit = "" } = useParams();
   const { data } = useGetPlayerGameInfos({ id: rabbit });
 
-  const [gameResult, setGameResult] = useState<{ image: string; text: gameResultContent }>();
+  const [gameResult, setGameResult] = useState<{ image: string; text: gameResultContent }>({
+    image: "0000",
+    text: GAME_RESULT_CONTENT["0000"],
+  });
 
   useEffect(() => {
     if (!data) return;

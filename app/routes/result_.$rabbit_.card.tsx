@@ -113,11 +113,7 @@ export default function Page() {
       <Header backgroundColor="#f0f4fc" />
 
       <div css={containerCss}>
-        <h1>
-          {nickname} 용사의 달토끼로
-          <br />
-          덕담카드 만들기
-        </h1>
+        <h1>{nickname} 용사의 덕담카드 만들기</h1>
 
         <RabbitCard message={message} onChangeMessage={handleChangeTextarea} rabbitId={rabbit} ref={cardRef} />
 
@@ -134,7 +130,7 @@ export default function Page() {
           <Button buttonType="secondary" onClick={handleClickDownload}>
             카드 다운로드
           </Button>
-          <Button onClick={handleClickShare}>결과 공유하기</Button>
+          <Button onClick={handleClickShare}>덕담 공유하기</Button>
         </div>
       </FloatingBottomArea>
     </>
@@ -149,7 +145,7 @@ const containerCss = css`
     font-size: 20px;
     text-align: center;
     padding-top: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 `;
 
