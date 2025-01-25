@@ -59,7 +59,7 @@ export default function Page() {
         <div
           css={result.wrapperCss}
           style={{
-            background: `#151528 url("/images/result/rabbit_${gameResult.image}.png") center/cover no-repeat`,
+            background: `#151528 url("/images/result/preview/rabbit_${gameResult.image}.png") center/cover no-repeat`,
           }}
         >
           <div css={result.textWrapperCss}>
