@@ -36,6 +36,8 @@ export const Button = ({ buttonType = "primary", children, as = "button", to, ..
 
 // 기본 스타일
 const baseButtonCss = css`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   text-align: center;
   border-radius: 8px;

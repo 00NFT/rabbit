@@ -1,7 +1,8 @@
 import { css } from "@emotion/react";
 import type { LoaderFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { useEffect } from "react";
+import { Button } from "~/components/button";
 import FloatingMessages from "~/components/common/floating-messages";
 import { getPlayerName } from "~/hooks/apis/useGetPlayerNames";
 import { usePhaseActions } from "~/utils/usePhaseActions";
@@ -50,10 +51,10 @@ export default function Index() {
         <FloatingMessages messages={scaledLoaderData} />
       </div>
       <div css={buttons.wrapperCss}>
-        <Link to={"/game"} css={buttons.cardButtonCss}>
-          시작하기
-        </Link>
-        <span> TEAM N프터 </span>
+        <Button as="link" to="/game">
+          <p css={buttons.titleCss}>시작하기</p>
+          <span css={buttons.descriptionCss}>달토끼를 구하고 덕담카드를 만드세요!</span>
+        </Button>
       </div>
     </>
   );
@@ -97,30 +98,16 @@ const buttons = {
     flex-direction: column;
     gap: 12px;
     justify-content: center;
-
-    > a {
-      text-align: center;
-    }
-
-    > span {
-      color: #6b7ca1;
-      text-align: center;
-      font-size: 12px;
-      font-weight: 400;
-    }
   `,
 
-  cardButtonCss: css`
-    font-size: 14px;
-    padding: 16px 0;
-    border-radius: 8px;
-
-    color: white;
-    background-color: #151528;
+  titleCss: css`
+    font-size: 16px;
   `,
 
-  homeButtonCss: css`
+  descriptionCss: css`
+    margin-top: 6px;
     font-size: 12px;
-    color: #7d7d7d;
+    font-weight: 500;
+    color: #6b7ca1;
   `,
 };
