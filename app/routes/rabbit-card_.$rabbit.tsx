@@ -8,14 +8,6 @@ import { RabbitCard } from "~/components/rabbit-card";
 import { GAME_RESULT_CONTENT, gameResultContent } from "~/constants/result";
 import { useGetPlayerGameInfos } from "~/hooks/apis/useGetPlayerGameInfos";
 
-// NOTE: 테스트 용 (제거 예정)
-// const tempInitialGameResult = {
-//   image: "0000",
-//   text: GAME_RESULT_CONTENT["0000"],
-//   username: "정졍",
-//   message: "새해 복 마니 받아라\n뿡뿡💨",
-// };
-
 export const meta: MetaFunction = () => {
   return [
     { property: "og:title", content: "띵동! 메시지가 도착했어요!" },
