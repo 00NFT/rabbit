@@ -101,6 +101,14 @@ const textareaCss = css`
     white-space: pre-line;
     color: #8e8e8e;
   }
+
+  /* disabled style (모바일 대응) */
+  &:disabled {
+    color: black;
+    background-color: transparent;
+    -webkit-text-fill-color: black;
+    opacity: 1;
+  }
 `;
 
 const underlineCss = css`

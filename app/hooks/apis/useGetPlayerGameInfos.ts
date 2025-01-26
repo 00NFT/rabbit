@@ -18,5 +18,6 @@ export const useGetPlayerGameInfos = (req: Req) => {
   return useQuery({
     queryKey: ["playerNames", req.id],
     queryFn: () => getPlayerGameInfos(req),
+    retry: 2
   });
 };
