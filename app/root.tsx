@@ -19,8 +19,8 @@ export const links: LinksFunction = () => [
 
 export const meta: MetaFunction = () => {
   return [
-    { property: "og:title", content: "띵동! 메세지가 도착했어요!" },
-    { property: "og:description", content: "달토끼와 함께하는 새해 덕담카드를 보러 오세요" },
+    { property: "og:title", content: "새해맞이 달토끼 구출 대작전" },
+    { property: "og:description", content: "틀린 그림찾기로 달토끼를 구해줘!" },
     { property: "og:image", content: "/images/og/og.png" },
     { property: "og:image:width", content: "1200" },
     { property: "og:image:height", content: "630" },

@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { useParams } from "@remix-run/react";
+import { MetaFunction, useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/button";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
@@ -15,6 +15,16 @@ import { useGetPlayerGameInfos } from "~/hooks/apis/useGetPlayerGameInfos";
 //   username: "정졍",
 //   message: "새해 복 마니 받아라\n뿡뿡💨",
 // };
+
+export const meta: MetaFunction = () => {
+  return [
+    { property: "og:title", content: "띵동! 메시지가 도착했어요!" },
+    { property: "og:description", content: "달토끼와 함께하는 새해 덕담카드를 보러 오세요" },
+    { property: "og:image", content: "/images/og/og-card.png" },
+    { property: "og:image:width", content: "1200" },
+    { property: "og:image:height", content: "630" },
+  ];
+};
 
 type gameResult = {
   image: string;
