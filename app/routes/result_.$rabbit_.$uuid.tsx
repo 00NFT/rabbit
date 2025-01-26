@@ -149,9 +149,14 @@ const containerCss = css`
 const buttonWrapper = css`
   width: 100%;
 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 10px;
+
+  > button:first-child {
+    width: fit-content;
+    padding: 16px 20px;
+    white-space: nowrap;
+  }
 `;
 
 const descriptionCss = css`
