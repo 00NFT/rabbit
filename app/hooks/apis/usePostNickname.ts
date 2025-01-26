@@ -3,7 +3,6 @@ import { api } from "~/api";
 
 type Req = {
   username: string;
-  message: string;
   game_result: string;
 };
 type Res = {
