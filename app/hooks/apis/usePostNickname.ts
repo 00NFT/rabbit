@@ -8,10 +8,10 @@ type Req = {
 };
 type Res = {
   id: string;
-}
+};
 export const usePostNickname = () => {
   const postNickname = async (req: Req) => {
-    const res: Res = await api.post(`/v1/card`, req);
+    const res = await api.post<Res>(`/v1/card`, req);
     return res;
   };
 

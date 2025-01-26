@@ -94,10 +94,10 @@ export default function Page() {
         game_result: rabbit,
       },
       {
-        onSuccess: ({ id }) => {
+        onSuccess: ({ data }) => {
           // TODO: console.log 제거 예정
-          console.log(id);
-          const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${id}`;
+          console.log(data);
+          const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${data.id}`;
           shareRabbitLink(shareUrl);
         },
         onError: (error) => {
