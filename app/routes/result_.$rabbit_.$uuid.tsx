@@ -149,9 +149,9 @@ const containerCss = css`
 const buttonWrapper = css`
   width: 100%;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
-  justify-content: center;
 `;
 
 const descriptionCss = css`

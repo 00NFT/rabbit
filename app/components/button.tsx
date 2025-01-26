@@ -38,6 +38,7 @@ export const Button = ({ buttonType = "primary", children, as = "button", to, ..
 const baseButtonCss = css`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   text-align: center;
   border-radius: 8px;
