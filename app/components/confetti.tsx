@@ -40,7 +40,7 @@ export default function Confetti({ condition }: { condition: boolean }) {
             count: 1,
           },
           rate: {
-            quantity: 6,
+            quantity: 25,
             delay: 1000,
           },
 
@@ -62,7 +62,7 @@ export default function Confetti({ condition }: { condition: boolean }) {
             count: 1,
           },
           rate: {
-            quantity: 6,
+            quantity: 25,
             delay: 1000,
           },
 
