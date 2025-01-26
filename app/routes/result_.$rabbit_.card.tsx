@@ -95,8 +95,6 @@ export default function Page() {
       },
       {
         onSuccess: ({ data }) => {
-          // TODO: console.log 제거 예정
-          console.log(data);
           const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${data.id}`;
           shareRabbitLink(shareUrl);
         },

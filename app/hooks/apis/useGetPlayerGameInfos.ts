@@ -11,7 +11,7 @@ type Res = {
 }
 export const useGetPlayerGameInfos = (req: Req) => {
   const getPlayerGameInfos = async ({ id }: Req) => {
-    const res: Res = await api.get(`/v1/card/${id}`);
+    const res = await api.get<Res>(`/v1/card/${id}`);
     return res;
   };
 
