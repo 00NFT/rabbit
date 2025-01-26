@@ -24,6 +24,7 @@ export const meta: MetaFunction = () => {
     { property: "og:image", content: "/images/og/og.png" },
     { property: "og:image:width", content: "1200" },
     { property: "og:image:height", content: "630" },
+    { name: "google-adsense-account", content: "ca-pub-7338574251336623" },
   ];
 };
 
