@@ -6,6 +6,7 @@ import { QueryProvider } from "./providers/query-provider";
 import { PreventExternalBrowser } from "./components/common/prevent-external-browser";
 import { useEffect } from "react";
 import AdSenseScript from "./components/common/ad-sense-script";
+import { Analytics } from "@vercel/analytics/remix";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -53,11 +54,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="icon" href="/favicon.svg" type="image/x-icon" />
         <Meta />
         <Links />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-S871JWVDE8"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', 'G-S871JWVDE8');
+            `,
+          }}
+        ></script>
       </head>
       <body>
         <QueryProvider>{isRestrictedBrowser ? <PreventExternalBrowser /> : children}</QueryProvider>
         <ScrollRestoration />
         <Scripts />
+        <Analytics />
         <AdSenseScript />
       </body>
     </html>
