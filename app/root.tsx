@@ -5,6 +5,7 @@ import "../style/global.css";
 import { QueryProvider } from "./providers/query-provider";
 import { PreventExternalBrowser } from "./components/common/prevent-external-browser";
 import { useEffect } from "react";
+import AdSenseScript from "./components/common/ad-sense-script";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -57,7 +58,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <QueryProvider>{isRestrictedBrowser ? <PreventExternalBrowser /> : children}</QueryProvider>
         <ScrollRestoration />
         <Scripts />
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7338574251336623" crossOrigin="anonymous" />
+        <AdSenseScript />
       </body>
     </html>
   );
