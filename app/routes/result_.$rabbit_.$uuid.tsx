@@ -11,12 +11,12 @@ import { Header } from "~/components/header";
 import { RabbitCard } from "~/components/rabbit-card";
 import { FloatingBottomArea } from "~/components/floating-bottom-area";
 import { nameAtom } from "~/utils/usePhaseActions";
-import { usePostNickname } from "~/hooks/apis/usePostNickname";
+import { usePostMessage } from "~/hooks/apis/usePostMessage";
 
 export default function Page() {
   const nickname = useAtomValue(nameAtom);
-  const { rabbit = "0000" } = useParams();
-  const { mutate } = usePostNickname();
+  const { rabbit = "0000", uuid = "" } = useParams();
+  const { mutate } = usePostMessage();
 
   const cardRef = useRef<HTMLDivElement>(null);
   const [message, setMessage] = useState("");
@@ -90,12 +90,11 @@ export default function Page() {
     mutate(
       {
         message,
-        username: nickname,
-        game_result: rabbit,
+        uuid,
       },
       {
-        onSuccess: ({ data }) => {
-          const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${data.id}`;
+        onSuccess: () => {
+          const shareUrl = `https://www.9haejo-tokki.co.kr/rabbit-card/${uuid}`;
           shareRabbitLink(shareUrl);
         },
         onError: (error) => {

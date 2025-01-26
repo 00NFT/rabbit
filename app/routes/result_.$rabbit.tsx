@@ -1,22 +1,50 @@
 import { css } from "@emotion/react";
 import { Link, useParams } from "@remix-run/react";
+import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/button";
 import Loading from "~/components/loading";
 import { GAME_RESULT_CONTENT } from "~/constants/result";
+import { usePostNickname } from "~/hooks/apis/usePostNickname";
+import { nameAtom } from "~/utils/usePhaseActions";
 
 export default function Page() {
+  const username = useAtomValue(nameAtom);
+  const { mutate } = usePostNickname();
+
   const { rabbit = "0000" } = useParams();
   const resultText = GAME_RESULT_CONTENT[rabbit];
 
+  const [userId, setUserId] = useState<string>("card");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
+
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!username?.length) return;
+
+    mutate(
+      {
+        username,
+        game_result: rabbit,
+      },
+      {
+        onSuccess: ({ data }) => {
+          setUserId(data.id);
+        },
+        onError: (error) => {
+          console.log(error);
+          alert("문제가 발생했어요!");
+        },
+      },
+    );
+  }, [username]);
 
   if (loading) {
     return <Loading />;
@@ -36,7 +64,7 @@ export default function Page() {
       </div>
 
       <div css={buttons.wrapperCss}>
-        <Button as="link" to={`/result/${rabbit}/card`}>
+        <Button as="link" to={`/result/${rabbit}/${userId}`}>
           새해 덕담카드 만들기
         </Button>
         <Link to={"/"} css={buttons.homeButtonCss}>
