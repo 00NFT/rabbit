@@ -29,13 +29,14 @@ export default function Page() {
   const [gameResult, setGameResult] = useState<gameResult>();
 
   useEffect(() => {
-    if (!data) return;
+    if (!data?.data) return;
 
+    const { RESULT, USERNAME, CARD_MESSAGE } = data.data;
     setGameResult({
-      image: data.RESULT,
-      text: GAME_RESULT_CONTENT[data.RESULT],
-      username: data.USERNAME,
-      message: data.CARD_MESSAGE,
+      image: RESULT,
+      text: GAME_RESULT_CONTENT[RESULT],
+      username: USERNAME,
+      message: CARD_MESSAGE,
     });
   }, [data]);
 
