@@ -1,5 +1,5 @@
 import type { LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
-import { json, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
+import { json, Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRouteError } from "@remix-run/react";
 import "../style/fonts.css";
 import "../style/global.css";
 import { QueryProvider } from "./providers/query-provider";
@@ -28,7 +28,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader: LoaderFunction = ({ request }) => {
-  const userAgent = request.headers.get("user-agent");
+  const userAgent = request.headers.get("user-agent") || "";
   const isKakao = userAgent?.includes("KAKAO");
   const isInstagram = userAgent?.includes("Instagram");
   const isRestrictedBrowser = isKakao || isInstagram;
@@ -37,7 +37,10 @@ export const loader: LoaderFunction = ({ request }) => {
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { isRestrictedBrowser, platform } = useLoaderData<typeof loader>();
+  const { isRestrictedBrowser, platform } = useLoaderData<typeof loader>() || {
+    isRestrictedBrowser: false,
+    platform: { isKakao: false, isInstagram: false },
+  };
 
   useEffect(() => {
     if (platform.isKakao) {
