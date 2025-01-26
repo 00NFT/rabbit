@@ -43,6 +43,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       window.open(`kakaotalk://web/openExternal?url=${encodeURIComponent(URL)}`);
     }
   }, []);
+
   return (
     <html lang="en">
       <head>
@@ -51,12 +52,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <link rel="icon" href="/favicon.svg" type="image/x-icon" />
         <Meta />
         <Links />
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7338574251336623" crossOrigin="anonymous" />
       </head>
       <body>
         <QueryProvider>{isRestrictedBrowser ? <PreventExternalBrowser /> : children}</QueryProvider>
         <ScrollRestoration />
         <Scripts />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7338574251336623" crossOrigin="anonymous" />
       </body>
     </html>
   );
