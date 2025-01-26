@@ -9,7 +9,7 @@ export default function Question() {
   useEffect(() => {
     let show = setTimeout(() => {
       increasePhase();
-    }, 3000);
+    }, 2000);
 
     return () => clearTimeout(show);
   }, []);
